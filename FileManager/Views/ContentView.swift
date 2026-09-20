@@ -15,11 +15,7 @@ struct ContentView: View {
                     }
                 }
                 .navigationDestination(for: FileItem.self) { item in
-                    if item.isDirectory && FolderProtectionStore.shared.isLocked(item.url) {
-                        LockedFolderGateView(item: item)
-                    } else {
-                        FileBrowserView(directory: item.url, title: item.name)
-                    }
+                    FolderDestinationView(item: item)
                 }
         }
     }

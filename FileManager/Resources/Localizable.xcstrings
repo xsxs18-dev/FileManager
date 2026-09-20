@@ -341,6 +341,16 @@
         }
       }
     },
+    "Files shared into FileManager from other apps won't show up here. This is usually a sideload signing issue — re-signing with your own Apple Developer account, or opening the project once in Xcode with your Apple ID, generally fixes it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus anderen Apps geteilte Dateien tauchen hier nicht auf. Das liegt meist an der Sideload-Signatur — neu signieren mit deinem eigenen Apple-Developer-Account oder das Projekt einmal in Xcode mit deiner Apple-ID öffnen behebt das in der Regel."
+          }
+        }
+      }
+    },
     "Folder name": {
       "localizations": {
         "de": {
@@ -561,6 +571,16 @@
         }
       }
     },
+    "Not working": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Funktioniert nicht"
+          }
+        }
+      }
+    },
     "OK": {
       "localizations": {
         "de": {
@@ -771,6 +791,16 @@
         }
       }
     },
+    "Share Extension storage": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share-Extension-Speicher"
+          }
+        }
+      }
+    },
     "Tap to open the release on GitHub and install it there.": {
       "localizations": {
         "de": {
@@ -887,6 +917,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Version"
+          }
+        }
+      }
+    },
+    "Working": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Funktioniert"
           }
         }
       }

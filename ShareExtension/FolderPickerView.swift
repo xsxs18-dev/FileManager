@@ -38,7 +38,23 @@ private struct FolderPickerLevelView: View {
         ZStack {
             FVColor.background.ignoresSafeArea()
             VStack(spacing: 0) {
-                if folders.isEmpty {
+                if !AppGroup.isAvailable {
+                    Spacer()
+                    VStack(spacing: FVSpacing.sm) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .font(.system(size: 32))
+                            .foregroundStyle(FVColor.danger)
+                        Text("Shared storage unavailable")
+                            .font(FVFont.headline)
+                            .foregroundStyle(FVColor.textPrimary)
+                        Text("FileManager's App Group entitlement isn't active on this install, so anything saved here would be invisible to the main app. This usually happens with sideload-signed builds. Re-signing with your own Apple Developer account, or opening the project once in Xcode with your Apple ID, generally fixes it.")
+                            .font(FVFont.caption)
+                            .foregroundStyle(FVColor.textSecondary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, FVSpacing.lg)
+                    }
+                    Spacer()
+                } else if folders.isEmpty {
                     Spacer()
                     Text("No subfolders")
                         .foregroundStyle(FVColor.textSecondary)
@@ -81,7 +97,7 @@ private struct FolderPickerLevelView: View {
                 }
                 .buttonStyle(.fvPrimary)
                 .padding(FVSpacing.md)
-                .disabled(isSaving || items.isEmpty)
+                .disabled(isSaving || items.isEmpty || !AppGroup.isAvailable)
             }
         }
         .navigationTitle(title)

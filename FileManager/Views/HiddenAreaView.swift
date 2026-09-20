@@ -38,6 +38,7 @@ struct HiddenAreaView: View {
                         .swipeActions(edge: .trailing) {
                             Button {
                                 protectionStore.setHidden(false, for: item.url)
+                                reload()
                             } label: {
                                 Label("Unhide", systemImage: "eye")
                             }
@@ -53,8 +54,10 @@ struct HiddenAreaView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(FVColor.background, for: .navigationBar)
         .toolbarColorScheme(ThemeManager.shared.current.colorScheme, for: .navigationBar)
+        .navigationDestination(for: FileItem.self) { item in
+            FolderDestinationView(item: item)
+        }
         .onAppear(perform: reload)
-        .onReceive(protectionStore.$hiddenPaths) { _ in reload() }
     }
 
     private func reload() {

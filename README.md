@@ -96,7 +96,7 @@ project.yml         XcodeGen project definition
 
 ## Known rough edges
 
-- Since this is sideloaded rather than App Store–distributed, some free Apple ID signing tools are inconsistent about preserving the App Group entitlement. If shared files don't show up after using the Share Sheet, that's the most likely cause — re-sign with your Apple Developer account if you have one, or open an issue.
+- Since this is sideloaded rather than App Store–distributed, some free Apple ID signing tools are inconsistent about preserving the App Group entitlement. If that happens, the Share Extension and the Settings tab will both say so explicitly instead of silently failing — re-sign with your own Apple Developer account, or open the project once in Xcode with your Apple ID to register the App Group, then re-sign with Sideloadly/AltStore.
 - The Share Extension's own UI is English-only for now, regardless of your system language — only the main app is localized.
 - No landscape-optimized layout yet.
 - No iPad-specific split view.

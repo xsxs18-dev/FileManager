@@ -3,6 +3,10 @@ import Foundation
 enum AppGroup {
     static let identifier = "group.com.xsxs18.FileManager"
 
+    static var isAvailable: Bool {
+        FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: identifier) != nil
+    }
+
     static var containerURL: URL {
         guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: identifier) else {
             return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
