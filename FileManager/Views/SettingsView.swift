@@ -18,20 +18,21 @@ struct SettingsView: View {
             FVColor.background.ignoresSafeArea()
             List {
                 Section {
-                    VStack(spacing: FVSpacing.sm) {
-                        Image(systemName: "gearshape.fill")
-                            .font(.system(size: 44))
-                            .foregroundStyle(FVColor.accent)
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                registerSecretTap()
-                            }
-                        Text("FileManager")
-                            .font(FVFont.headline)
-                            .foregroundStyle(FVColor.textPrimary)
+                    Button {
+                        registerSecretTap()
+                    } label: {
+                        VStack(spacing: FVSpacing.sm) {
+                            Image(systemName: "gearshape.fill")
+                                .font(.system(size: 44))
+                                .foregroundStyle(FVColor.accent)
+                            Text("FileManager")
+                                .font(FVFont.headline)
+                                .foregroundStyle(FVColor.textPrimary)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, FVSpacing.md)
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, FVSpacing.md)
+                    .buttonStyle(.plain)
                     .listRowBackground(FVColor.background)
                 }
 
@@ -62,17 +63,18 @@ struct SettingsView: View {
                 .listRowBackground(FVColor.surface)
 
                 Section {
-                    HStack {
-                        Text("Version")
-                            .foregroundStyle(FVColor.textPrimary)
-                        Spacer()
-                        Text(currentVersionLabel)
-                            .foregroundStyle(FVColor.textSecondary)
-                    }
-                    .contentShape(Rectangle())
-                    .onTapGesture {
+                    Button {
                         registerVersionTap()
+                    } label: {
+                        HStack {
+                            Text("Version")
+                                .foregroundStyle(FVColor.textPrimary)
+                            Spacer()
+                            Text(currentVersionLabel)
+                                .foregroundStyle(FVColor.textSecondary)
+                        }
                     }
+                    .buttonStyle(.plain)
 
                     Button {
                         checkForUpdate()
@@ -170,7 +172,7 @@ struct SettingsView: View {
 
     private func registerSecretTap() {
         let now = Date()
-        if now.timeIntervalSince(lastSecretTap) > 1.5 {
+        if now.timeIntervalSince(lastSecretTap) > 2.5 {
             secretTapCount = 0
         }
         lastSecretTap = now
@@ -183,7 +185,7 @@ struct SettingsView: View {
 
     private func registerVersionTap() {
         let now = Date()
-        if now.timeIntervalSince(lastVersionTap) > 1.5 {
+        if now.timeIntervalSince(lastVersionTap) > 2.5 {
             versionTapCount = 0
         }
         lastVersionTap = now
