@@ -486,17 +486,31 @@ struct FileBrowserView: View {
 
     private func importFiles(_ urls: [URL]) {
         for url in urls {
-            let accessing = url.startAccessingSecurityScopedResource()
-            defer { if accessing { url.stopAccessingSecurityScopedResource() } }
-            do {
-                let data = try Data(contentsOf: url)
-                let name = FileSystemService.shared.uniqueName(for: url.lastPathComponent, in: directory)
-                try FileSystemService.shared.createFile(named: name, in: directory, contents: data)
-            } catch {
-                errorMessage = error.localizedDescription
-            }
+            importFile(from: url)
         }
         reload()
+    }
+
+    private func importFile(from url: URL) {
+        let accessing = url.startAccessingSecurityScopedResource()
+        defer { if accessing { url.stopAccessingSecurityScopedResource() } }
+
+        var coordinatorError: NSError?
+        var thrownError: Error?
+        let coordinator = NSFileCoordinator()
+        coordinator.coordinate(readingItemAt: url, options: [], error: &coordinatorError) { readURL in
+            do {
+                let data = try Data(contentsOf: readURL)
+                let name = FileSystemService.shared.uniqueName(for: readURL.lastPathComponent, in: directory)
+                try FileSystemService.shared.createFile(named: name, in: directory, contents: data)
+            } catch {
+                thrownError = error
+            }
+        }
+
+        if let error = coordinatorError ?? thrownError {
+            errorMessage = error.localizedDescription
+        }
     }
 
     private func createFolder(named name: String) {
