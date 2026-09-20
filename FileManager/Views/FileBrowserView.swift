@@ -31,6 +31,10 @@ struct FileBrowserView: View {
         case editText(FileItem)
         case encryptFile(FileItem)
         case decryptFile(FileItem)
+        case move(FileItem)
+        case copy(FileItem)
+        case moveSelection
+        case copySelection
 
         var id: String {
             switch self {
@@ -48,6 +52,10 @@ struct FileBrowserView: View {
             case .editText(let item): return "editText-\(item.id)"
             case .encryptFile(let item): return "encryptFile-\(item.id)"
             case .decryptFile(let item): return "decryptFile-\(item.id)"
+            case .move(let item): return "move-\(item.id)"
+            case .copy(let item): return "copy-\(item.id)"
+            case .moveSelection: return "moveSelection"
+            case .copySelection: return "copySelection"
             }
         }
     }
@@ -160,8 +168,30 @@ struct FileBrowserView: View {
                 }
                 .foregroundStyle(FVColor.accent)
             }
-            ToolbarItem(placement: .bottomBar) {
+            ToolbarItemGroup(placement: .bottomBar) {
                 if editMode == .active && !selection.isEmpty {
+                    Button {
+                        activeSheet = .moveSelection
+                    } label: {
+                        Label("Move", systemImage: "folder")
+                    }
+                    .foregroundStyle(FVColor.accent)
+                    Spacer()
+                    Button {
+                        activeSheet = .copySelection
+                    } label: {
+                        Label("Copy", systemImage: "doc.on.doc")
+                    }
+                    .foregroundStyle(FVColor.accent)
+                    Spacer()
+                    let shareURLs = selection.filter { !$0.isDirectory }.map(\.url)
+                    if !shareURLs.isEmpty {
+                        ShareLink(items: shareURLs) {
+                            Label("Share", systemImage: "square.and.arrow.up")
+                        }
+                        .foregroundStyle(FVColor.accent)
+                        Spacer()
+                    }
                     Button {
                         activeSheet = .zipCreate
                     } label: {
@@ -262,6 +292,26 @@ struct FileBrowserView: View {
                     confirmTitle: "Decrypt"
                 ) { password in
                     decryptFile(item, password: password)
+                }
+            case .move(let item):
+                VaultFolderPickerSheet(mode: .move, items: [item]) {
+                    reload()
+                }
+            case .copy(let item):
+                VaultFolderPickerSheet(mode: .copy, items: [item]) {
+                    reload()
+                }
+            case .moveSelection:
+                VaultFolderPickerSheet(mode: .move, items: Array(selection)) {
+                    selection.removeAll()
+                    editMode = .inactive
+                    reload()
+                }
+            case .copySelection:
+                VaultFolderPickerSheet(mode: .copy, items: Array(selection)) {
+                    selection.removeAll()
+                    editMode = .inactive
+                    reload()
                 }
             }
         }
@@ -373,6 +423,21 @@ struct FileBrowserView: View {
                 activeSheet = .rename(item)
             } label: {
                 Label("Rename", systemImage: "pencil")
+            }
+            if !item.isDirectory {
+                Button {
+                    activeSheet = .move(item)
+                } label: {
+                    Label("Move", systemImage: "folder")
+                }
+                Button {
+                    activeSheet = .copy(item)
+                } label: {
+                    Label("Copy", systemImage: "doc.on.doc")
+                }
+                ShareLink(item: item.url) {
+                    Label("Share", systemImage: "square.and.arrow.up")
+                }
             }
             if item.isDirectory {
                 Button {

@@ -112,6 +112,16 @@ final class FileSystemService {
         }
     }
 
+    func copy(_ item: FileItem, to directory: URL) throws {
+        let destination = directory.appendingPathComponent(item.name, isDirectory: item.isDirectory)
+        guard !fileManager.fileExists(atPath: destination.path) else { throw FileSystemError.alreadyExists }
+        do {
+            try fileManager.copyItem(at: item.url, to: destination)
+        } catch {
+            throw FileSystemError.underlying(error)
+        }
+    }
+
     func delete(_ item: FileItem) throws {
         do {
             try fileManager.removeItem(at: item.url)
