@@ -119,6 +119,18 @@ final class FileSystemService {
         }
     }
 
+    func uniqueName(for suggestedName: String, in directory: URL) -> String {
+        let base = (suggestedName as NSString).deletingPathExtension
+        let ext = (suggestedName as NSString).pathExtension
+        var candidate = suggestedName
+        var counter = 1
+        while fileManager.fileExists(atPath: directory.appendingPathComponent(candidate).path) {
+            counter += 1
+            candidate = ext.isEmpty ? "\(base) \(counter)" : "\(base) \(counter).\(ext)"
+        }
+        return candidate
+    }
+
     private func sanitize(_ name: String) -> String {
         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
         let forbidden = CharacterSet(charactersIn: "/\\:")

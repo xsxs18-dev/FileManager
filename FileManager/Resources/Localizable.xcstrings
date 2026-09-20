@@ -401,6 +401,16 @@
         }
       }
     },
+    "Import File": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datei importieren"
+          }
+        }
+      }
+    },
     "Incorrect password.": {
       "localizations": {
         "de": {

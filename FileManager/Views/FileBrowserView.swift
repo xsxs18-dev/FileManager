@@ -1,6 +1,7 @@
 import SwiftUI
 import UIKit
 import PDFKit
+import UniformTypeIdentifiers
 
 struct FileBrowserView: View {
     let directory: URL
@@ -14,6 +15,7 @@ struct FileBrowserView: View {
     @State private var selection = Set<FileItem>()
     @State private var activeCover: ActiveCover?
     @State private var scannedImages: [UIImage] = []
+    @State private var isImporting = false
     @ObservedObject private var protectionStore = FolderProtectionStore.shared
 
     private enum ActiveSheet: Identifiable {
@@ -122,6 +124,11 @@ struct FileBrowserView: View {
                         activeSheet = .newTextFile
                     } label: {
                         Label("New Text File", systemImage: "doc.text")
+                    }
+                    Button {
+                        isImporting = true
+                    } label: {
+                        Label("Import File", systemImage: "square.and.arrow.down")
                     }
                     Divider()
                     Button {
@@ -304,6 +311,14 @@ struct FileBrowserView: View {
             }
             Button("Cancel", role: .cancel) { itemPendingDelete = nil }
         }
+        .fileImporter(isPresented: $isImporting, allowedContentTypes: [.item], allowsMultipleSelection: true) { result in
+            switch result {
+            case .success(let urls):
+                importFiles(urls)
+            case .failure(let error):
+                errorMessage = error.localizedDescription
+            }
+        }
         .onAppear(perform: reload)
     }
 
@@ -446,9 +461,14 @@ struct FileBrowserView: View {
     private func icon(for item: FileItem) -> String {
         switch item.fileExtension.lowercased() {
         case "pdf": return "doc.richtext"
-        case "zip": return "doc.zipper"
-        case "txt": return "doc.plaintext"
-        case "jpg", "jpeg", "png", "heic": return "photo"
+        case "zip", "rar", "7z": return "doc.zipper"
+        case "txt", "rtf", "md": return "doc.plaintext"
+        case "jpg", "jpeg", "png", "heic", "heif", "gif", "bmp", "tiff", "webp": return "photo"
+        case "mp3", "wav", "aac", "m4a", "flac", "aiff": return "music.note"
+        case "mp4", "mov", "m4v", "avi", "mkv": return "film"
+        case "doc", "docx", "pages": return "doc.text"
+        case "xls", "xlsx", "numbers", "csv": return "tablecells"
+        case "ppt", "pptx", "key": return "rectangle.on.rectangle"
         case FileEncryptionService.fileExtension: return "lock.doc"
         default: return "doc"
         }
@@ -462,6 +482,21 @@ struct FileBrowserView: View {
         } catch {
             errorMessage = error.localizedDescription
         }
+    }
+
+    private func importFiles(_ urls: [URL]) {
+        for url in urls {
+            let accessing = url.startAccessingSecurityScopedResource()
+            defer { if accessing { url.stopAccessingSecurityScopedResource() } }
+            do {
+                let data = try Data(contentsOf: url)
+                let name = FileSystemService.shared.uniqueName(for: url.lastPathComponent, in: directory)
+                try FileSystemService.shared.createFile(named: name, in: directory, contents: data)
+            } catch {
+                errorMessage = error.localizedDescription
+            }
+        }
+        reload()
     }
 
     private func createFolder(named name: String) {
