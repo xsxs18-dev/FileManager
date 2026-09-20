@@ -1,86 +1,96 @@
-# FileManager
+<p align="center">
+  <img src="FileManager/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png" width="128" height="128" alt="FileManager icon">
+</p>
 
-A local-first file manager for iOS 18+, built for sideloading. FileManager goes beyond what Apple's Files app offers: real PDF password protection, AES-256 encrypted ZIP archives, a Share Sheet extension, and folders that can be hidden or locked behind Face ID — all without a single network request.
+<h1 align="center">FileManager</h1>
 
-![Build IPA](https://github.com/xsxs18-dev/FileManager/actions/workflows/build-ipa.yml/badge.svg)
+<p align="center">
+  A local file manager for iOS that actually does the things Apple's Files app won't.
+</p>
 
-## Features
+<p align="center">
+  <img src="https://github.com/xsxs18-dev/FileManager/actions/workflows/build-ipa.yml/badge.svg" alt="Build status">
+  <img src="https://img.shields.io/badge/iOS-18%2B-blue" alt="iOS 18+">
+  <img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="MIT license">
+</p>
 
-### File & Folder Management
-- Create folders and files, including empty `.txt` files
-- Rename files and folders — including changing the file extension (`.txt` → `.zip`, `.pdf`, ...)
-- Browse, delete, and multi-select items
+---
 
-### Hidden & Face ID-Protected Folders
-- Mark any folder as **hidden** — it disappears from normal navigation and is only reachable from a dedicated "Hidden Area"
-- Independently **lock** any folder with Face ID / passcode (`LocalAuthentication`)
-- Hidden and locked are separate, composable protections
+Files apps on iOS are fine for browsing, but the moment you want to actually *protect* something — a real password on a PDF, an encrypted zip, a folder nobody but you can open — you're stuck. FileManager is my answer to that: a sideloaded, no-account, no-backend file manager that treats security features as first-class, not an afterthought.
 
-### Share Sheet Integration
-- FileManager appears as a destination in the iOS share sheet of any app
-- Incoming shared files are routed into a folder picker so you choose exactly where they land in the vault
+Everything runs on-device. There's no server, no analytics, no account. The app never makes a network request — it doesn't even ask for one.
 
-### ZIP Module
-- Create and extract ZIP archives from any selection of files/folders
-- Password-protect archives with **AES-256**: since `ZIPFoundation` has no native password support, files are individually encrypted with `CryptoKit` (AES-GCM, key derived from the password + a random salt) before being zipped
+## What it does
 
-### PDF Module
-- Create PDFs from multiple images (combined into one document), from plain text (simple built-in editor), or from a document scan (`VisionKit` camera scanner)
-- **Real, standard-compliant PDF password protection** via `PDFKit`'s owner/user password (`PDFDocument.write(to:withOptions:)`) — the resulting file is protected everywhere, not just inside this app
-- Unlock a protected PDF by entering its password, preview it, and save an unlocked copy
+**Files & folders** — the basics, done properly: create folders and files, rename anything (including swapping the extension, `.txt` → `.pdf`, whatever), multi-select, delete, browse.
 
-## Tech Stack
+**Hidden & Face ID–locked folders** — mark a folder "hidden" and it's gone from normal browsing, only reachable from its own dedicated area. Separately, lock any folder behind Face ID / passcode. The two are independent, so you can mix and match.
 
-- **SwiftUI** for the entire app (UIKit only where required: `VNDocumentCameraViewController` for scanning, a `UIViewController`-based Share Extension)
-- **PDFKit** — PDF creation, rendering, and encryption
-- **ZIPFoundation** (SwiftPM) — ZIP archive creation/extraction
-- **CryptoKit** — AES-GCM encryption for password-protected ZIP contents
-- **LocalAuthentication** — Face ID / passcode folder locking
-- **App Group** (`group.com.xsxs18.FileManager`) — shared storage container between the main app and the Share Extension
-- 100% local. No backend, no network calls, no analytics.
+**Share Sheet support** — FileManager shows up when you tap Share in any other app. Pick a file, pick FileManager, pick a folder to drop it in. Done.
 
-## Project Structure
+**ZIP, with real encryption** — create and extract zip archives from anything in the app. Password-protect them with AES-256. (`ZIPFoundation` doesn't support encrypted zips natively, so files are individually encrypted with `CryptoKit` before they ever get zipped.)
 
-```
-FileManager/
-├── App/              # App entry point
-├── DesignSystem/      # Colors, spacing, typography, shared styles
-├── Models/             # FileItem, ZipManifest
-├── Services/           # FileSystemService, ZipService, PDFService,
-│                        # CryptoService, AuthenticationService, FolderProtectionStore
-├── Shared/              # App Group constants (shared with the extension)
-├── Views/               # SwiftUI screens and sheets
-└── Resources/            # Assets, Info.plist
+**PDF tools** — build a PDF from a batch of photos, from typed text, or straight from the camera via a document scanner. Lock it with a real owner/user password through `PDFKit` — the kind of protection that works when you open the file in *any* PDF reader, not just this app.
 
-ShareExtension/          # Share Sheet extension target
-project.yml               # XcodeGen project definition
-.github/workflows/         # CI: builds an unsigned .ipa on every push
-```
+## Screenshots
 
-## Building
+*(coming soon — open an issue or PR if you'd like to contribute some)*
 
-This project uses [XcodeGen](https://github.com/yonaskolb/XcodeGen) to generate the `.xcodeproj` from `project.yml` — the generated project is not committed.
+## Getting it running
+
+You'll need a Mac with Xcode and [XcodeGen](https://github.com/yonaskolb/XcodeGen) (the `.xcodeproj` isn't committed — it's generated from `project.yml`):
 
 ```bash
 brew install xcodegen
+git clone https://github.com/xsxs18-dev/FileManager.git
+cd FileManager
 xcodegen generate
 open FileManager.xcodeproj
 ```
 
-Set your signing team in Xcode (Signing & Capabilities) and build to a device.
+Set your own signing team in Xcode and build to a device.
 
-### CI Builds
+### Don't have Xcode?
 
-Every push to `main` triggers a GitHub Actions workflow that builds an **unsigned** `.ipa` on a macOS runner and uploads it as a build artifact. Since this app isn't distributed through the App Store, the artifact needs to be signed locally before installing:
+Every push to `main` builds an **unsigned** `.ipa` automatically on GitHub Actions. Grab it from the [Releases](https://github.com/xsxs18-dev/FileManager/releases) page or the latest [Actions run](https://github.com/xsxs18-dev/FileManager/actions), then sign and install it with your own free (or paid) Apple ID using:
 
-1. Download the `FileManager-unsigned-ipa` artifact from the [Actions](https://github.com/xsxs18-dev/FileManager/actions) tab
-2. Sign and install it with [Sideloadly](https://sideloadly.io/) or [AltStore](https://altstore.io/) using your own Apple ID
+- [Sideloadly](https://sideloadly.io/), or
+- [AltStore](https://altstore.io/) — handles the 7-day re-signing free accounts need automatically
 
-## Requirements
+## How it's built
 
-- iOS 18.0+
-- No App Store account needed — designed for sideloading with a free or paid Apple Developer identity
+| | |
+|---|---|
+| UI | SwiftUI everywhere, except where iOS forces UIKit (the document scanner, the Share Extension host) |
+| PDF | `PDFKit` — creation, rendering, and real owner/user password encryption |
+| ZIP | [`ZIPFoundation`](https://github.com/weichsel/ZIPFoundation) for archiving, `CryptoKit` (AES-GCM) for encryption |
+| Face ID | `LocalAuthentication` |
+| App ↔ Share Extension | one App Group container, no App Store, no cloud |
+
+```
+FileManager/
+├── App/            entry point
+├── DesignSystem/   colors, spacing, type, shared button/card styles
+├── Models/         FileItem, ZipManifest
+├── Services/       FileSystemService, ZipService, PDFService, CryptoService,
+│                   AuthenticationService, FolderProtectionStore
+├── Shared/         App Group constants, shared with the extension
+├── Views/          screens and sheets
+└── Resources/      Assets.xcassets, Info.plist
+
+ShareExtension/     the Share Sheet extension target
+project.yml         XcodeGen project definition
+.github/workflows/  CI — builds an unsigned .ipa on every push
+```
+
+## Known rough edges
+
+- Since this is sideloaded rather than App Store–distributed, some free Apple ID signing tools are inconsistent about preserving the App Group entitlement. If shared files don't show up after using the Share Sheet, that's the most likely cause — re-sign with your Apple Developer account if you have one, or open an issue.
+- No landscape-optimized layout yet.
+- No iPad-specific split view.
+
+Contributions and bug reports welcome — this is a small side project, not a polished product, and it'll stay that way unless people find it useful enough to push on.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE). Do whatever you want with it.

@@ -58,7 +58,6 @@ final class ZipService {
     @discardableResult
     func extractArchive(at archiveURL: URL, to directory: URL, password: String?) throws -> URL {
         let tempDir = fileManager.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
-        try fileManager.createDirectory(at: tempDir, withIntermediateDirectories: true)
         defer { try? fileManager.removeItem(at: tempDir) }
 
         do {

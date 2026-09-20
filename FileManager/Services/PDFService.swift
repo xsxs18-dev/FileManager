@@ -102,11 +102,11 @@ final class PDFService {
     @discardableResult
     func saveUnlockedCopy(_ document: PDFDocument, originalName: String, in directory: URL) throws -> URL {
         let base = (originalName as NSString).deletingPathExtension
-        var candidate = "\(base) (entsperrt).pdf"
+        var candidate = "\(base) (unlocked).pdf"
         var counter = 1
         while FileManager.default.fileExists(atPath: directory.appendingPathComponent(candidate).path) {
             counter += 1
-            candidate = "\(base) (entsperrt \(counter)).pdf"
+            candidate = "\(base) (unlocked \(counter)).pdf"
         }
         let destination = directory.appendingPathComponent(candidate)
         guard document.write(to: destination) else { throw PDFServiceError.renderingFailed }
