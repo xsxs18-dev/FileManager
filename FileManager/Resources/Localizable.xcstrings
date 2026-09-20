@@ -1,36 +1,6 @@
 {
   "sourceLanguage": "en",
   "strings": {
-    "10 Attempts": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "10 Versuchen"
-          }
-        }
-      }
-    },
-    "3 Attempts": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "3 Versuchen"
-          }
-        }
-      }
-    },
-    "5 Attempts": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "5 Versuchen"
-          }
-        }
-      }
-    },
     "An item with this name already exists.": {
       "localizations": {
         "de": {
@@ -271,12 +241,12 @@
         }
       }
     },
-    "Delete Folder After": {
+    "Delete a locked folder — or the secret vault — automatically after this many wrong Face ID attempts in a row. A cancelled prompt never counts.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ordner löschen nach"
+            "value": "Löscht einen gesperrten Ordner — oder den geheimen Vault — automatisch nach so vielen falschen Face-ID-Versuchen in Folge. Ein abgebrochener Versuch zählt nie mit."
           }
         }
       }
@@ -901,12 +871,12 @@
         }
       }
     },
-    "Secure Delete overwrites a file's data with random bytes before removing it, so it's much harder to recover afterward. Slower than a normal delete, especially for large files.\n\n\"Delete Folder After\" applies to Face ID-locked folders: after that many failed unlock attempts in a row, the folder is deleted automatically. A cancelled Face ID prompt doesn't count toward the limit.": {
+    "Secure Delete overwrites a file's data with random bytes before removing it, so it's much harder to recover afterward. Slower than a normal delete, especially for large files.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sicheres Löschen überschreibt die Daten einer Datei mit Zufallswerten, bevor sie entfernt wird, damit sie danach viel schwerer wiederherstellbar ist. Langsamer als normales Löschen, besonders bei großen Dateien.\n\n„Ordner löschen nach\" gilt für Face-ID-gesperrte Ordner: Nach so vielen fehlgeschlagenen Entsperrversuchen in Folge wird der Ordner automatisch gelöscht. Ein abgebrochener Face-ID-Versuch zählt nicht mit."
+            "value": "Sicheres Löschen überschreibt die Daten einer Datei mit Zufallswerten, bevor sie entfernt wird, damit sie danach viel schwerer wiederherstellbar ist. Langsamer als normales Löschen, besonders bei großen Dateien."
           }
         }
       }
@@ -927,6 +897,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bilder auswählen"
+          }
+        }
+      }
+    },
+    "Self-Destruct Limit": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selbstzerstörungs-Limit"
           }
         }
       }

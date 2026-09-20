@@ -7,6 +7,7 @@ struct SecretVaultGateView: View {
     @State private var wasDeleted = false
     @State private var errorMessage: String?
     @State private var isAuthenticating = false
+    @State private var showFirstTimeSetup = false
 
     var body: some View {
         Group {
@@ -19,6 +20,9 @@ struct SecretVaultGateView: View {
                                     .foregroundStyle(FVColor.accent)
                             }
                         }
+                }
+                .sheet(isPresented: $showFirstTimeSetup) {
+                    SelfDestructThresholdSheet {}
                 }
             } else if wasDeleted {
                 deletedScreen
@@ -92,11 +96,15 @@ struct SecretVaultGateView: View {
         guard !isAuthenticating else { return }
         isAuthenticating = true
         errorMessage = nil
+        let isFirstTime = !FileSystemService.shared.secretVaultExists
         let secretRoot = FileSystemService.shared.secretRootURL
         do {
             try await AuthenticationService.shared.authenticate(reason: "Unlock Secret Vault")
             FolderProtectionStore.shared.resetFailedAttempts(for: secretRoot)
             isUnlocked = true
+            if isFirstTime {
+                showFirstTimeSetup = true
+            }
         } catch AuthenticationError.cancelled {
             isAuthenticating = false
             return

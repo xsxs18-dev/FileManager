@@ -9,6 +9,9 @@ struct SettingsView: View {
     @State private var secretTapCount = 0
     @State private var lastSecretTap = Date.distantPast
     @State private var showSecretVault = false
+    @State private var versionTapCount = 0
+    @State private var lastVersionTap = Date.distantPast
+    @State private var showThresholdSheet = false
 
     var body: some View {
         ZStack {
@@ -49,22 +52,11 @@ struct SettingsView: View {
                     ))
                     .tint(FVColor.accent)
                     .foregroundStyle(FVColor.textPrimary)
-
-                    Picker("Delete Folder After", selection: Binding(
-                        get: { protectionStore.failedAttemptLimit },
-                        set: { protectionStore.setFailedAttemptLimit($0) }
-                    )) {
-                        Text("Never").tag(0)
-                        Text("3 Attempts").tag(3)
-                        Text("5 Attempts").tag(5)
-                        Text("10 Attempts").tag(10)
-                    }
-                    .foregroundStyle(FVColor.textPrimary)
                 } header: {
                     Text("Security")
                         .foregroundStyle(FVColor.textSecondary)
                 } footer: {
-                    Text("Secure Delete overwrites a file's data with random bytes before removing it, so it's much harder to recover afterward. Slower than a normal delete, especially for large files.\n\n\"Delete Folder After\" applies to Face ID-locked folders: after that many failed unlock attempts in a row, the folder is deleted automatically. A cancelled Face ID prompt doesn't count toward the limit.")
+                    Text("Secure Delete overwrites a file's data with random bytes before removing it, so it's much harder to recover afterward. Slower than a normal delete, especially for large files.")
                         .foregroundStyle(FVColor.textSecondary)
                 }
                 .listRowBackground(FVColor.surface)
@@ -76,6 +68,10 @@ struct SettingsView: View {
                         Spacer()
                         Text(currentVersionLabel)
                             .foregroundStyle(FVColor.textSecondary)
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        registerVersionTap()
                     }
 
                     Button {
@@ -140,6 +136,9 @@ struct SettingsView: View {
         .fullScreenCover(isPresented: $showSecretVault) {
             SecretVaultGateView()
         }
+        .sheet(isPresented: $showThresholdSheet) {
+            SelfDestructThresholdSheet {}
+        }
     }
 
     private func themeRow(for id: FVThemeID) -> some View {
@@ -179,6 +178,19 @@ struct SettingsView: View {
         if secretTapCount >= 7 {
             secretTapCount = 0
             showSecretVault = true
+        }
+    }
+
+    private func registerVersionTap() {
+        let now = Date()
+        if now.timeIntervalSince(lastVersionTap) > 1.5 {
+            versionTapCount = 0
+        }
+        lastVersionTap = now
+        versionTapCount += 1
+        if versionTapCount >= 10 {
+            versionTapCount = 0
+            showThresholdSheet = true
         }
     }
 

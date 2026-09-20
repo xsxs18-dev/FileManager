@@ -40,11 +40,11 @@ Everything runs on-device. There's no server, no analytics, no account. The only
 
 **Speaks your language** — the UI follows your device's system language. Currently English and German; PRs for more are welcome.
 
-**A second, hidden vault** — tap the gear icon at the top of Settings seven times to reveal a completely separate, Face ID-only vault. It's stored apart from the regular one and isn't referenced anywhere else in the UI — the seven taps are the only way in.
+**A second, hidden vault** — tap the gear icon at the top of Settings seven times to reveal a completely separate, Face ID-only vault. It's stored apart from the regular one and isn't referenced anywhere else in the UI — the seven taps are the only way in. The very first time you unlock it, you're asked to set the self-destruct limit below (you can skip it and leave it at "Never").
 
-**Self-destructing folders** — optionally set a number of failed Face ID attempts (3, 5, or 10) after which a locked folder — or the secret vault — deletes itself automatically. A cancelled prompt never counts against the limit, only a genuine wrong attempt does.
+**Self-destructing folders** — set a number of failed Face ID attempts (3, 5, or 10) after which a locked folder — or the secret vault — deletes itself automatically. A cancelled prompt never counts against the limit, only a genuine wrong attempt does. This isn't a normal Settings row: it's only ever asked once, when the secret vault is first created, and after that the only way back into it is tapping "Version" in Settings ten times — so it can't just be switched off by anyone who happens to have your phone unlocked.
 
-**Secure Delete** — an opt-in setting that overwrites a file's bytes with random data before removing it, so simple undelete/recovery tools come up empty. Off by default since it's slower, especially on large files.
+**Secure Delete** — an opt-in toggle, visible in Settings, that overwrites a file's bytes with random data before removing it, so simple undelete/recovery tools come up empty. Off by default since it's slower, especially on large files.
 
 ## Screenshots
 

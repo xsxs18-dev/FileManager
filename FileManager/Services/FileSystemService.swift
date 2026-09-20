@@ -32,12 +32,20 @@ final class FileSystemService {
     }
 
     var secretRootURL: URL {
-        let documents = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let url = documents.appendingPathComponent("SecretVault", isDirectory: true)
+        let url = secretVaultPath
         if !fileManager.fileExists(atPath: url.path) {
             try? fileManager.createDirectory(at: url, withIntermediateDirectories: true)
         }
         return url
+    }
+
+    var secretVaultExists: Bool {
+        fileManager.fileExists(atPath: secretVaultPath.path)
+    }
+
+    private var secretVaultPath: URL {
+        let documents = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        return documents.appendingPathComponent("SecretVault", isDirectory: true)
     }
 
     func contents(of directory: URL) throws -> [FileItem] {
