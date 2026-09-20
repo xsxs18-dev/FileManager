@@ -7,13 +7,13 @@ struct FolderPickerView: View {
 
     var body: some View {
         NavigationStack {
-            FolderPickerLevelView(directory: FileSystemService.shared.rootURL, title: "Meine Dateien", items: items, onComplete: onComplete)
+            FolderPickerLevelView(directory: FileSystemService.shared.rootURL, title: "My Files", items: items, onComplete: onComplete)
                 .navigationDestination(for: URL.self) { url in
                     FolderPickerLevelView(directory: url, title: url.lastPathComponent, items: items, onComplete: onComplete)
                 }
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
-                        Button("Abbrechen") { onCancel() }
+                        Button("Cancel") { onCancel() }
                             .foregroundStyle(FVColor.accent)
                     }
                 }
@@ -40,7 +40,7 @@ private struct FolderPickerLevelView: View {
             VStack(spacing: 0) {
                 if folders.isEmpty {
                     Spacer()
-                    Text("Keine Unterordner")
+                    Text("No subfolders")
                         .foregroundStyle(FVColor.textSecondary)
                     Spacer()
                 } else {
@@ -71,7 +71,7 @@ private struct FolderPickerLevelView: View {
                 Button {
                     save()
                 } label: {
-                    Text(isSaving ? "Speichern…" : "Hier speichern (\(items.count))")
+                    Text(isSaving ? "Saving…" : "Save Here (\(items.count))")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.fvPrimary)
@@ -94,7 +94,7 @@ private struct FolderPickerLevelView: View {
             }
         }
         .sheet(isPresented: $showNewFolderSheet) {
-            NameInputSheet(title: "Neuer Ordner", placeholder: "Ordnername") { name in
+            NameInputSheet(title: "New Folder", placeholder: "Folder name") { name in
                 _ = try? FileSystemService.shared.createFolder(named: name, in: directory)
                 reload()
             }

@@ -8,9 +8,9 @@ enum FileSystemError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .alreadyExists:
-            return "Es existiert bereits ein Element mit diesem Namen."
+            return "An item with this name already exists."
         case .invalidName:
-            return "Ungültiger Name."
+            return "Invalid name."
         case .underlying(let error):
             return error.localizedDescription
         }

@@ -6,7 +6,7 @@ struct ImagesToPDFSheet: View {
 
     @State private var selectedItems: [PhotosPickerItem] = []
     @State private var images: [UIImage] = []
-    @State private var name = "Dokument"
+    @State private var name = "Document"
     @State private var errorMessage: String?
     @Environment(\.dismiss) private var dismiss
 
@@ -16,7 +16,7 @@ struct ImagesToPDFSheet: View {
                 FVColor.background.ignoresSafeArea()
                 VStack(alignment: .leading, spacing: FVSpacing.md) {
                     PhotosPicker(selection: $selectedItems, matching: .images) {
-                        Label(images.isEmpty ? "Bilder auswählen" : "\(images.count) Bild(er) ausgewählt", systemImage: "photo.on.rectangle")
+                        Label(images.isEmpty ? "Select Images" : "\(images.count) image(s) selected", systemImage: "photo.on.rectangle")
                     }
                     .buttonStyle(.fvPrimary)
                     .onChange(of: selectedItems) { _, newItems in
@@ -37,7 +37,7 @@ struct ImagesToPDFSheet: View {
                         }
                     }
 
-                    TextField("Dateiname", text: $name)
+                    TextField("File name", text: $name)
                         .autocorrectionDisabled()
                         .padding(FVSpacing.md)
                         .background(FVColor.surface)
@@ -54,15 +54,15 @@ struct ImagesToPDFSheet: View {
                 }
                 .padding(FVSpacing.md)
             }
-            .navigationTitle("PDF aus Bildern")
+            .navigationTitle("PDF from Images")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Abbrechen") { dismiss() }
+                    Button("Cancel") { dismiss() }
                         .foregroundStyle(FVColor.accent)
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Erstellen") { confirm() }
+                    Button("Create") { confirm() }
                         .foregroundStyle(FVColor.accent)
                         .disabled(images.isEmpty || name.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
@@ -80,7 +80,7 @@ struct ImagesToPDFSheet: View {
             }
             await MainActor.run {
                 images = loaded
-                if loaded.isEmpty { errorMessage = "Bilder konnten nicht geladen werden." } else { errorMessage = nil }
+                if loaded.isEmpty { errorMessage = "Could not load images." } else { errorMessage = nil }
             }
         }
     }

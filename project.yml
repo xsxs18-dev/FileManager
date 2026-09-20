@@ -27,8 +27,8 @@ targets:
           - UIInterfaceOrientationPortrait
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
-        NSCameraUsageDescription: "FileManager benötigt Kamerazugriff zum Scannen von Dokumenten."
-        NSFaceIDUsageDescription: "FileManager nutzt Face ID zum Entsperren geschützter Ordner."
+        NSCameraUsageDescription: "FileManager needs camera access to scan documents."
+        NSFaceIDUsageDescription: "FileManager uses Face ID to unlock protected folders."
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.xsxs18.FileManager

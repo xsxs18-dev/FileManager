@@ -81,33 +81,33 @@ struct FileBrowserView: View {
                     Button {
                         activeSheet = .newFolder
                     } label: {
-                        Label("Neuer Ordner", systemImage: "folder.badge.plus")
+                        Label("New Folder", systemImage: "folder.badge.plus")
                     }
                     Button {
                         activeSheet = .newFile
                     } label: {
-                        Label("Neue Datei", systemImage: "doc.badge.plus")
+                        Label("New File", systemImage: "doc.badge.plus")
                     }
                     Button {
                         createTextFile()
                     } label: {
-                        Label("Neue Textdatei", systemImage: "doc.text")
+                        Label("New Text File", systemImage: "doc.text")
                     }
                     Divider()
                     Button {
                         activeSheet = .imagesToPDF
                     } label: {
-                        Label("PDF aus Bildern", systemImage: "photo.on.rectangle")
+                        Label("PDF from Images", systemImage: "photo.on.rectangle")
                     }
                     Button {
                         activeSheet = .textToPDF
                     } label: {
-                        Label("PDF aus Text", systemImage: "doc.richtext")
+                        Label("PDF from Text", systemImage: "doc.richtext")
                     }
                     Button {
                         isScanning = true
                     } label: {
-                        Label("Dokument scannen", systemImage: "camera.viewfinder")
+                        Label("Scan Document", systemImage: "camera.viewfinder")
                     }
                 } label: {
                     Image(systemName: "plus.circle.fill")
@@ -115,7 +115,7 @@ struct FileBrowserView: View {
                 }
             }
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(editMode == .active ? "Fertig" : "Auswählen") {
+                Button(editMode == .active ? "Done" : "Select") {
                     withAnimation {
                         editMode = editMode == .active ? .inactive : .active
                     }
@@ -128,7 +128,7 @@ struct FileBrowserView: View {
                     Button {
                         activeSheet = .zipCreate
                     } label: {
-                        Label("Zip erstellen (\(selection.count))", systemImage: "doc.zipper")
+                        Label("Create Zip (\(selection.count))", systemImage: "doc.zipper")
                     }
                     .foregroundStyle(FVColor.accent)
                 }
@@ -137,19 +137,19 @@ struct FileBrowserView: View {
         .sheet(item: $activeSheet) { sheet in
             switch sheet {
             case .newFolder:
-                NameInputSheet(title: "Neuer Ordner", placeholder: "Ordnername") { name in
+                NameInputSheet(title: "New Folder", placeholder: "Folder name") { name in
                     createFolder(named: name)
                 }
             case .newFile:
-                NameInputSheet(title: "Neue Datei", placeholder: "dateiname.ext") { name in
+                NameInputSheet(title: "New File", placeholder: "filename.ext") { name in
                     createFile(named: name)
                 }
             case .rename(let item):
                 NameInputSheet(
-                    title: "Umbenennen",
+                    title: "Rename",
                     placeholder: "Name",
                     initialValue: item.name,
-                    confirmTitle: "Speichern"
+                    confirmTitle: "Save"
                 ) { name in
                     rename(item, to: name)
                 }
@@ -159,8 +159,8 @@ struct FileBrowserView: View {
                 }
             case .extractPassword(let item):
                 PasswordPromptSheet(
-                    title: "Passwort erforderlich",
-                    message: "Archiv „\(item.name)“ ist verschlüsselt."
+                    title: "Password Required",
+                    message: "Archive \"\(item.name)\" is encrypted."
                 ) { password in
                     extract(item, password: password)
                 }
@@ -174,27 +174,27 @@ struct FileBrowserView: View {
                 }
             case .scanNaming:
                 NameInputSheet(
-                    title: "PDF speichern",
-                    placeholder: "Dateiname",
+                    title: "Save PDF",
+                    placeholder: "File name",
                     initialValue: "Scan",
-                    confirmTitle: "Speichern"
+                    confirmTitle: "Save"
                 ) { name in
                     createPDFFromScan(named: name)
                 }
             case .encryptPDF(let item):
                 PasswordPromptSheet(
-                    title: "PDF verschlüsseln",
-                    message: "„\(item.name)“ mit Passwort schützen (AES, Owner- & User-Password).",
-                    confirmTitle: "Verschlüsseln",
+                    title: "Encrypt PDF",
+                    message: "Protect \"\(item.name)\" with a password (AES, owner & user password).",
+                    confirmTitle: "Encrypt",
                     requiresConfirmation: true
                 ) { password in
                     encryptPDF(item, password: password)
                 }
             case .decryptPDF(let item):
                 PasswordPromptSheet(
-                    title: "Passwort eingeben",
-                    message: "„\(item.name)“ ist passwortgeschützt.",
-                    confirmTitle: "Entsperren"
+                    title: "Enter Password",
+                    message: "\"\(item.name)\" is password protected.",
+                    confirmTitle: "Unlock"
                 ) { password in
                     decryptPDF(item, password: password)
                 }
@@ -218,21 +218,21 @@ struct FileBrowserView: View {
                 saveUnlockedCopy(context)
             }
         }
-        .alert("Fehler", isPresented: .constant(errorMessage != nil), presenting: errorMessage) { _ in
+        .alert("Error", isPresented: .constant(errorMessage != nil), presenting: errorMessage) { _ in
             Button("OK") { errorMessage = nil }
         } message: { message in
             Text(message)
         }
         .confirmationDialog(
-            "„\(itemPendingDelete?.name ?? "")“ löschen?",
+            "Delete \"\(itemPendingDelete?.name ?? "")\"?",
             isPresented: .constant(itemPendingDelete != nil),
             titleVisibility: .visible
         ) {
-            Button("Löschen", role: .destructive) {
+            Button("Delete", role: .destructive) {
                 if let item = itemPendingDelete { delete(item) }
                 itemPendingDelete = nil
             }
-            Button("Abbrechen", role: .cancel) { itemPendingDelete = nil }
+            Button("Cancel", role: .cancel) { itemPendingDelete = nil }
         }
         .onAppear(perform: reload)
     }
@@ -242,7 +242,7 @@ struct FileBrowserView: View {
             Image(systemName: "tray")
                 .font(.system(size: 40))
                 .foregroundStyle(FVColor.textSecondary)
-            Text("Leer")
+            Text("Empty")
                 .font(FVFont.body)
                 .foregroundStyle(FVColor.textSecondary)
         }
@@ -264,12 +264,12 @@ struct FileBrowserView: View {
             Button(role: .destructive) {
                 itemPendingDelete = item
             } label: {
-                Label("Löschen", systemImage: "trash")
+                Label("Delete", systemImage: "trash")
             }
             Button {
                 activeSheet = .rename(item)
             } label: {
-                Label("Umbenennen", systemImage: "pencil")
+                Label("Rename", systemImage: "pencil")
             }
             .tint(FVColor.accent)
         }
@@ -277,22 +277,22 @@ struct FileBrowserView: View {
             Button {
                 activeSheet = .rename(item)
             } label: {
-                Label("Umbenennen", systemImage: "pencil")
+                Label("Rename", systemImage: "pencil")
             }
             if item.isDirectory {
                 Button {
                     protectionStore.setHidden(true, for: item.url)
                     reload()
                 } label: {
-                    Label("Verstecken", systemImage: "eye.slash")
+                    Label("Hide", systemImage: "eye.slash")
                 }
                 Button {
                     protectionStore.setLocked(!protectionStore.isLocked(item.url), for: item.url)
                 } label: {
                     if protectionStore.isLocked(item.url) {
-                        Label("Face-ID-Sperre entfernen", systemImage: "lock.open")
+                        Label("Remove Face ID Lock", systemImage: "lock.open")
                     } else {
-                        Label("Mit Face ID sperren", systemImage: "lock")
+                        Label("Lock with Face ID", systemImage: "lock")
                     }
                 }
             }
@@ -300,7 +300,7 @@ struct FileBrowserView: View {
                 Button {
                     startExtract(item)
                 } label: {
-                    Label("Entpacken", systemImage: "doc.zipper")
+                    Label("Extract", systemImage: "doc.zipper")
                 }
             }
             if !item.isDirectory && item.fileExtension.lowercased() == "pdf" {
@@ -308,20 +308,20 @@ struct FileBrowserView: View {
                     Button {
                         activeSheet = .decryptPDF(item)
                     } label: {
-                        Label("Entsperren", systemImage: "lock.open")
+                        Label("Unlock", systemImage: "lock.open")
                     }
                 } else {
                     Button {
                         activeSheet = .encryptPDF(item)
                     } label: {
-                        Label("Verschlüsseln", systemImage: "lock")
+                        Label("Encrypt", systemImage: "lock")
                     }
                 }
             }
             Button(role: .destructive) {
                 itemPendingDelete = item
             } label: {
-                Label("Löschen", systemImage: "trash")
+                Label("Delete", systemImage: "trash")
             }
         }
     }
@@ -392,7 +392,7 @@ struct FileBrowserView: View {
 
     private func createTextFile() {
         do {
-            let base = "Neue Datei"
+            let base = "New File"
             var candidate = "\(base).txt"
             var counter = 1
             while FileManager.default.fileExists(atPath: directory.appendingPathComponent(candidate).path) {

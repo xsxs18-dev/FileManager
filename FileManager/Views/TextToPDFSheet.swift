@@ -4,7 +4,7 @@ struct TextToPDFSheet: View {
     let onConfirm: (_ text: String, _ name: String) -> Void
 
     @State private var text = ""
-    @State private var name = "Notiz"
+    @State private var name = "Note"
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -12,7 +12,7 @@ struct TextToPDFSheet: View {
             ZStack {
                 FVColor.background.ignoresSafeArea()
                 VStack(spacing: FVSpacing.md) {
-                    TextField("Dateiname", text: $name)
+                    TextField("File name", text: $name)
                         .autocorrectionDisabled()
                         .padding(FVSpacing.md)
                         .background(FVColor.surface)
@@ -28,15 +28,15 @@ struct TextToPDFSheet: View {
                 }
                 .padding(FVSpacing.md)
             }
-            .navigationTitle("PDF aus Text")
+            .navigationTitle("PDF from Text")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Abbrechen") { dismiss() }
+                    Button("Cancel") { dismiss() }
                         .foregroundStyle(FVColor.accent)
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Exportieren") { confirm() }
+                    Button("Export") { confirm() }
                         .foregroundStyle(FVColor.accent)
                         .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
                 }

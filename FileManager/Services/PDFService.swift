@@ -8,9 +8,9 @@ enum PDFServiceError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .renderingFailed: return "PDF konnte nicht erstellt werden."
-        case .wrongPassword: return "Falsches Passwort."
-        case .notEncrypted: return "Diese PDF ist nicht verschlüsselt."
+        case .renderingFailed: return "The PDF could not be created."
+        case .wrongPassword: return "Incorrect password."
+        case .notEncrypted: return "This PDF is not encrypted."
         }
     }
 }

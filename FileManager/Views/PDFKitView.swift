@@ -34,11 +34,11 @@ struct UnlockedPDFSheet: View {
                 .toolbarColorScheme(.dark, for: .navigationBar)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
-                        Button("Schließen") { dismiss() }
+                        Button("Close") { dismiss() }
                             .foregroundStyle(FVColor.accent)
                     }
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Entsperrte Version speichern") {
+                        Button("Save Unlocked Copy") {
                             onSave()
                             dismiss()
                         }

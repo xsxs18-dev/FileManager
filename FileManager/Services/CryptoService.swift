@@ -7,8 +7,8 @@ enum CryptoServiceError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .wrongPassword: return "Falsches Passwort."
-        case .encryptionFailed: return "Verschlüsselung fehlgeschlagen."
+        case .wrongPassword: return "Incorrect password."
+        case .encryptionFailed: return "Encryption failed."
         }
     }
 }

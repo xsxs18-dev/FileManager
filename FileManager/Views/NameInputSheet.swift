@@ -16,7 +16,7 @@ struct NameInputSheet: View {
         title: String,
         placeholder: String,
         initialValue: String = "",
-        confirmTitle: String = "Erstellen",
+        confirmTitle: String = "Create",
         onConfirm: @escaping (String) -> Void
     ) {
         self.title = title
@@ -55,7 +55,7 @@ struct NameInputSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Abbrechen") { dismiss() }
+                    Button("Cancel") { dismiss() }
                         .foregroundStyle(FVColor.accent)
                 }
                 ToolbarItem(placement: .confirmationAction) {

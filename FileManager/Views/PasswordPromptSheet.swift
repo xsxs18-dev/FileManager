@@ -16,7 +16,7 @@ struct PasswordPromptSheet: View {
     init(
         title: String,
         message: String? = nil,
-        confirmTitle: String = "Bestätigen",
+        confirmTitle: String = "Confirm",
         requiresConfirmation: Bool = false,
         onConfirm: @escaping (String) -> Void
     ) {
@@ -38,7 +38,7 @@ struct PasswordPromptSheet: View {
                             .foregroundStyle(FVColor.textSecondary)
                     }
 
-                    SecureField("Passwort", text: $password)
+                    SecureField("Password", text: $password)
                         .focused($isFocused)
                         .padding(FVSpacing.md)
                         .background(FVColor.surface)
@@ -46,7 +46,7 @@ struct PasswordPromptSheet: View {
                         .foregroundStyle(FVColor.textPrimary)
 
                     if requiresConfirmation {
-                        SecureField("Passwort bestätigen", text: $confirmation)
+                        SecureField("Confirm Password", text: $confirmation)
                             .padding(FVSpacing.md)
                             .background(FVColor.surface)
                             .clipShape(RoundedRectangle(cornerRadius: FVRadius.sm, style: .continuous))
@@ -67,7 +67,7 @@ struct PasswordPromptSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Abbrechen") { dismiss() }
+                    Button("Cancel") { dismiss() }
                         .foregroundStyle(FVColor.accent)
                 }
                 ToolbarItem(placement: .confirmationAction) {
@@ -83,7 +83,7 @@ struct PasswordPromptSheet: View {
 
     private func confirm() {
         if requiresConfirmation && password != confirmation {
-            errorMessage = "Passwörter stimmen nicht überein."
+            errorMessage = "Passwords do not match."
             return
         }
         onConfirm(password)

@@ -12,7 +12,7 @@ struct HiddenAreaView: View {
                     Image(systemName: "eye.slash")
                         .font(.system(size: 40))
                         .foregroundStyle(FVColor.textSecondary)
-                    Text("Keine versteckten Ordner")
+                    Text("No hidden folders")
                         .font(FVFont.body)
                         .foregroundStyle(FVColor.textSecondary)
                 }
@@ -39,7 +39,7 @@ struct HiddenAreaView: View {
                             Button {
                                 protectionStore.setHidden(false, for: item.url)
                             } label: {
-                                Label("Einblenden", systemImage: "eye")
+                                Label("Unhide", systemImage: "eye")
                             }
                             .tint(FVColor.accent)
                         }
@@ -49,7 +49,7 @@ struct HiddenAreaView: View {
                 .scrollContentBackground(.hidden)
             }
         }
-        .navigationTitle("Versteckter Bereich")
+        .navigationTitle("Hidden Area")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(FVColor.background, for: .navigationBar)
         .toolbarColorScheme(.dark, for: .navigationBar)

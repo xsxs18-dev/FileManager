@@ -37,7 +37,7 @@ struct LockedFolderGateView: View {
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, FVSpacing.lg)
                 }
-                Button("Mit Face ID entsperren") {
+                Button("Unlock with Face ID") {
                     Task { await authenticate() }
                 }
                 .buttonStyle(.fvPrimary)
@@ -54,7 +54,7 @@ struct LockedFolderGateView: View {
         isAuthenticating = true
         errorMessage = nil
         do {
-            try await AuthenticationService.shared.authenticate(reason: "Entsperre „\(item.name)“")
+            try await AuthenticationService.shared.authenticate(reason: "Unlock \"\(item.name)\"")
             isUnlocked = true
         } catch {
             errorMessage = error.localizedDescription

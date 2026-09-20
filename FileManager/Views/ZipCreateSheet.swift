@@ -4,7 +4,7 @@ struct ZipCreateSheet: View {
     let itemCount: Int
     let onConfirm: (_ name: String, _ password: String?) -> Void
 
-    @State private var name = "Archiv"
+    @State private var name = "Archive"
     @State private var useEncryption = false
     @State private var password = ""
     @State private var confirmation = ""
@@ -16,11 +16,11 @@ struct ZipCreateSheet: View {
             ZStack {
                 FVColor.background.ignoresSafeArea()
                 VStack(alignment: .leading, spacing: FVSpacing.md) {
-                    Text("\(itemCount) Element(e) werden gezippt")
+                    Text("\(itemCount) item(s) will be zipped")
                         .font(FVFont.caption)
                         .foregroundStyle(FVColor.textSecondary)
 
-                    TextField("Archivname", text: $name)
+                    TextField("Archive name", text: $name)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
                         .padding(FVSpacing.md)
@@ -28,18 +28,18 @@ struct ZipCreateSheet: View {
                         .clipShape(RoundedRectangle(cornerRadius: FVRadius.sm, style: .continuous))
                         .foregroundStyle(FVColor.textPrimary)
 
-                    Toggle("Mit Passwort verschlüsseln (AES-256)", isOn: $useEncryption.animation())
+                    Toggle("Encrypt with password (AES-256)", isOn: $useEncryption.animation())
                         .tint(FVColor.accent)
                         .foregroundStyle(FVColor.textPrimary)
 
                     if useEncryption {
-                        SecureField("Passwort", text: $password)
+                        SecureField("Password", text: $password)
                             .padding(FVSpacing.md)
                             .background(FVColor.surface)
                             .clipShape(RoundedRectangle(cornerRadius: FVRadius.sm, style: .continuous))
                             .foregroundStyle(FVColor.textPrimary)
 
-                        SecureField("Passwort bestätigen", text: $confirmation)
+                        SecureField("Confirm password", text: $confirmation)
                             .padding(FVSpacing.md)
                             .background(FVColor.surface)
                             .clipShape(RoundedRectangle(cornerRadius: FVRadius.sm, style: .continuous))
@@ -56,15 +56,15 @@ struct ZipCreateSheet: View {
                 }
                 .padding(FVSpacing.md)
             }
-            .navigationTitle("Zip erstellen")
+            .navigationTitle("Create Zip")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Abbrechen") { dismiss() }
+                    Button("Cancel") { dismiss() }
                         .foregroundStyle(FVColor.accent)
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Erstellen") { confirm() }
+                    Button("Create") { confirm() }
                         .foregroundStyle(FVColor.accent)
                         .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
@@ -78,11 +78,11 @@ struct ZipCreateSheet: View {
         guard !trimmedName.isEmpty else { return }
         if useEncryption {
             guard !password.isEmpty else {
-                errorMessage = "Bitte ein Passwort eingeben."
+                errorMessage = "Please enter a password."
                 return
             }
             guard password == confirmation else {
-                errorMessage = "Passwörter stimmen nicht überein."
+                errorMessage = "Passwords do not match."
                 return
             }
         }
