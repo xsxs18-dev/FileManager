@@ -8,15 +8,12 @@ struct FileBrowserView: View {
 
     @State private var items: [FileItem] = []
     @State private var activeSheet: ActiveSheet?
-    @State private var itemPendingRename: FileItem?
     @State private var itemPendingDelete: FileItem?
     @State private var errorMessage: String?
     @State private var editMode: EditMode = .inactive
     @State private var selection = Set<FileItem>()
-    @State private var isScanning = false
+    @State private var activeCover: ActiveCover?
     @State private var scannedImages: [UIImage] = []
-    @State private var unlockedContext: UnlockedPDFContext?
-    @State private var previewItem: FileItem?
     @ObservedObject private var protectionStore = FolderProtectionStore.shared
 
     private enum ActiveSheet: Identifiable {
@@ -59,6 +56,20 @@ struct FileBrowserView: View {
         let id = UUID()
         let document: PDFDocument
         let item: FileItem
+    }
+
+    private enum ActiveCover: Identifiable {
+        case scanner
+        case unlockedPDF(UnlockedPDFContext)
+        case preview(FileItem)
+
+        var id: String {
+            switch self {
+            case .scanner: return "scanner"
+            case .unlockedPDF(let context): return "unlockedPDF-\(context.id)"
+            case .preview(let item): return "preview-\(item.id)"
+            }
+        }
     }
 
     var body: some View {
@@ -124,7 +135,7 @@ struct FileBrowserView: View {
                         Label("PDF from Text", systemImage: "doc.richtext")
                     }
                     Button {
-                        isScanning = true
+                        activeCover = .scanner
                     } label: {
                         Label("Scan Document", systemImage: "camera.viewfinder")
                     }
@@ -247,37 +258,44 @@ struct FileBrowserView: View {
                 }
             }
         }
-        .fullScreenCover(isPresented: $isScanning) {
-            DocumentScannerView(
-                onFinish: { images in
-                    isScanning = false
-                    scannedImages = images
-                    if !images.isEmpty { activeSheet = .scanNaming }
-                },
-                onCancel: {
-                    isScanning = false
+        .fullScreenCover(item: $activeCover) { cover in
+            switch cover {
+            case .scanner:
+                DocumentScannerView(
+                    onFinish: { images in
+                        activeCover = nil
+                        scannedImages = images
+                        if !images.isEmpty { activeSheet = .scanNaming }
+                    },
+                    onCancel: {
+                        activeCover = nil
+                    }
+                )
+                .ignoresSafeArea()
+            case .unlockedPDF(let context):
+                UnlockedPDFSheet(document: context.document, originalName: context.item.name) {
+                    saveUnlockedCopy(context)
                 }
-            )
-            .ignoresSafeArea()
-        }
-        .fullScreenCover(item: $unlockedContext) { context in
-            UnlockedPDFSheet(document: context.document, originalName: context.item.name) {
-                saveUnlockedCopy(context)
+            case .preview(let item):
+                FilePreviewSheet(item: item) {
+                    activeCover = nil
+                }
             }
         }
-        .fullScreenCover(item: $previewItem) { item in
-            FilePreviewSheet(item: item) {
-                previewItem = nil
-            }
-        }
-        .alert("Error", isPresented: .constant(errorMessage != nil), presenting: errorMessage) { _ in
+        .alert("Error", isPresented: Binding(
+            get: { errorMessage != nil },
+            set: { isPresented in if !isPresented { errorMessage = nil } }
+        ), presenting: errorMessage) { _ in
             Button("OK") { errorMessage = nil }
         } message: { message in
             Text(message)
         }
         .confirmationDialog(
             "Delete \"\(itemPendingDelete?.name ?? "")\"?",
-            isPresented: .constant(itemPendingDelete != nil),
+            isPresented: Binding(
+                get: { itemPendingDelete != nil },
+                set: { isPresented in if !isPresented { itemPendingDelete = nil } }
+            ),
             titleVisibility: .visible
         ) {
             Button("Delete", role: .destructive) {
@@ -587,7 +605,7 @@ struct FileBrowserView: View {
     private func decryptPDF(_ item: FileItem, password: String) {
         do {
             let document = try PDFService.shared.unlock(at: item.url, password: password)
-            unlockedContext = UnlockedPDFContext(document: document, item: item)
+            activeCover = .unlockedPDF(UnlockedPDFContext(document: document, item: item))
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -602,7 +620,7 @@ struct FileBrowserView: View {
         } else if ext == "txt" {
             activeSheet = .editText(item)
         } else {
-            previewItem = item
+            activeCover = .preview(item)
         }
     }
 
