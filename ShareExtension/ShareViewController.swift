@@ -13,9 +13,10 @@ final class ShareViewController: UIViewController {
     }
 
     private func presentPicker(for items: [ShareItem]) {
-        let picker = FolderPickerView(
+        let picker = PendingImportQueueView(
             items: items,
             onComplete: { [weak self] in
+                self?.openMainApp()
                 self?.extensionContext?.completeRequest(returningItems: nil)
             },
             onCancel: { [weak self] in
@@ -29,6 +30,19 @@ final class ShareViewController: UIViewController {
         hosting.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(hosting.view)
         hosting.didMove(toParent: self)
+    }
+
+    private func openMainApp() {
+        guard let url = URL(string: "filemanager://import") else { return }
+        let selector = sel_registerName("openURL:")
+        var responder: UIResponder? = self
+        while let current = responder {
+            if current.responds(to: selector) {
+                current.perform(selector, with: url)
+                return
+            }
+            responder = current.next
+        }
     }
 
     private func extractAttachments(completion: @escaping ([ShareItem]) -> Void) {

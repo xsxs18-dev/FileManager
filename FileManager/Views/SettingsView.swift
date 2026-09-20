@@ -74,21 +74,11 @@ struct SettingsView: View {
                 .listRowBackground(FVColor.surface)
 
                 Section {
-                    HStack {
-                        Text("Share Extension storage")
-                            .foregroundStyle(FVColor.textPrimary)
-                        Spacer()
-                        Label(
-                            AppGroup.isAvailable ? "Working" : "Not working",
-                            systemImage: AppGroup.isAvailable ? "checkmark.circle.fill" : "exclamationmark.triangle.fill"
-                        )
-                        .foregroundStyle(AppGroup.isAvailable ? FVColor.accent : FVColor.danger)
-                    }
-                } footer: {
-                    if !AppGroup.isAvailable {
-                        Text("Files shared into FileManager from other apps won't show up here. This is usually a sideload signing issue — re-signing with your own Apple Developer account, or opening the project once in Xcode with your Apple ID, generally fixes it.")
-                            .foregroundStyle(FVColor.textSecondary)
-                    }
+                    Text("Files shared here from other apps land in My Files the next time FileManager is opened.")
+                        .foregroundStyle(FVColor.textSecondary)
+                } header: {
+                    Text("Share Sheet")
+                        .foregroundStyle(FVColor.textSecondary)
                 }
                 .listRowBackground(FVColor.surface)
             }

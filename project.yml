@@ -35,16 +35,15 @@ targets:
         CFBundleLocalizations:
           - en
           - de
+        CFBundleURLTypes:
+          - CFBundleURLName: com.xsxs18.FileManager
+            CFBundleURLSchemes:
+              - filemanager
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.xsxs18.FileManager
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         TARGETED_DEVICE_FAMILY: "1,2"
-    entitlements:
-      path: FileManager/FileManager.entitlements
-      properties:
-        com.apple.security.application-groups:
-          - group.com.xsxs18.FileManager
     dependencies:
       - target: ShareExtension
         embed: true
@@ -54,14 +53,10 @@ targets:
     type: app-extension
     platform: iOS
     sources:
-      - path: FileManager/Models/FileItem.swift
-      - path: FileManager/Services/FileSystemService.swift
-      - path: FileManager/Services/FolderProtectionStore.swift
       - path: FileManager/Services/ThemeManager.swift
       - path: FileManager/DesignSystem/Theme.swift
       - path: FileManager/DesignSystem/FVTheme.swift
-      - path: FileManager/Views/NameInputSheet.swift
-      - path: FileManager/Shared/AppGroup.swift
+      - path: FileManager/Shared/PendingImportStore.swift
       - path: ShareExtension
     info:
       path: ShareExtension/Info.plist
@@ -72,11 +67,6 @@ targets:
           NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShareViewController
           NSExtensionAttributes:
             NSExtensionActivationRule: TRUEPREDICATE
-    entitlements:
-      path: ShareExtension/ShareExtension.entitlements
-      properties:
-        com.apple.security.application-groups:
-          - group.com.xsxs18.FileManager
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.xsxs18.FileManager.ShareExtension

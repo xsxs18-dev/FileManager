@@ -23,7 +23,8 @@ final class FileSystemService {
     private let fileManager = FileManager.default
 
     var rootURL: URL {
-        let url = AppGroup.containerURL.appendingPathComponent("Vault", isDirectory: true)
+        let documents = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let url = documents.appendingPathComponent("Vault", isDirectory: true)
         if !fileManager.fileExists(atPath: url.path) {
             try? fileManager.createDirectory(at: url, withIntermediateDirectories: true)
         }

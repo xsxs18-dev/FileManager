@@ -7,7 +7,7 @@ final class FolderProtectionStore: ObservableObject {
     @Published private(set) var hiddenPaths: Set<String>
     @Published private(set) var lockedPaths: Set<String>
 
-    private let defaults = AppGroup.sharedDefaults
+    private let defaults = UserDefaults.standard
     private let hiddenKey = "FileManager.hiddenPaths"
     private let lockedKey = "FileManager.lockedPaths"
 
