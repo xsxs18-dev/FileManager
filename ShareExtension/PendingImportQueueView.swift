@@ -20,7 +20,7 @@ struct PendingImportQueueView: View {
                     Text("Send \(items.count) file(s) to FileManager")
                         .font(FVFont.headline)
                         .foregroundStyle(FVColor.textPrimary)
-                    Text("Open FileManager afterwards to finish bringing these into My Files.")
+                    Text("Open FileManager afterwards to finish bringing these into My Files. This briefly uses the system clipboard to hand the files over, so whatever you last copied will be replaced.")
                         .font(FVFont.caption)
                         .foregroundStyle(FVColor.textSecondary)
                         .multilineTextAlignment(.center)

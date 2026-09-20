@@ -9,12 +9,10 @@ enum PendingImportStore {
 
     static let maxItemSize = 20_000_000
 
-    private static let pasteboardName = UIPasteboard.Name("com.xsxs18.FileManager.pendingImport")
     private static let itemType = "com.xsxs18.filemanager.pending-import-item"
 
     static func queue(_ items: [Item]) {
-        guard let pasteboard = UIPasteboard(name: pasteboardName, create: true) else { return }
-        pasteboard.items = items.compactMap { item in
+        UIPasteboard.general.items = items.compactMap { item in
             guard let nameData = item.name.data(using: .utf8), nameData.count <= UInt32.max else { return nil }
             var payload = encodedUInt32(UInt32(nameData.count))
             payload.append(nameData)
@@ -24,18 +22,14 @@ enum PendingImportStore {
     }
 
     static func takePending() -> [Item] {
-        guard let pasteboard = UIPasteboard(name: pasteboardName, create: false) else { return [] }
-        let items = pasteboard.items.compactMap { entry -> Item? in
+        let items = UIPasteboard.general.items.compactMap { entry -> Item? in
             guard let payload = entry[itemType] as? Data else { return nil }
             return decode(payload)
         }
-        pasteboard.items = []
+        if !items.isEmpty {
+            UIPasteboard.general.items = []
+        }
         return items
-    }
-
-    static var hasPending: Bool {
-        guard let pasteboard = UIPasteboard(name: pasteboardName, create: false) else { return false }
-        return !pasteboard.items.isEmpty
     }
 
     private static func encodedUInt32(_ value: UInt32) -> Data {

@@ -26,7 +26,7 @@ Everything runs on-device. There's no server, no analytics, no account. The only
 
 **Hidden & Face ID–locked folders** — mark a folder "hidden" and it's gone from normal browsing, only reachable from its own dedicated area. Separately, lock any folder behind Face ID / passcode. The two are independent, so you can mix and match.
 
-**Share Sheet support** — FileManager shows up when you tap Share in any other app. Send a file over, then open FileManager to finish bringing it into My Files. (This deliberately doesn't rely on an App Group, since that needs a real, fully provisioned Apple Developer account — the extension hands files to the app over a named pasteboard instead, so it works with any signing setup.)
+**Share Sheet support** — FileManager shows up when you tap Share in any other app. Send a file over, then open FileManager to finish bringing it into My Files. (This deliberately doesn't rely on an App Group, since that needs a real, fully provisioned Apple Developer account — the extension hands files to the app over the system clipboard instead, briefly, so it works with any signing setup. Named/custom pasteboards would avoid touching your actual clipboard, but Apple deprecated those for exactly this kind of app-to-extension handoff back in iOS 10.)
 
 **ZIP, with real encryption** — create and extract zip archives from anything in the app. Password-protect them with AES-256. (`ZIPFoundation` doesn't support encrypted zips natively, so files are individually encrypted with `CryptoKit` before they ever get zipped.)
 
@@ -75,7 +75,7 @@ Every push to `main` builds an **unsigned** `.ipa` on GitHub Actions and publish
 | Generic file encryption | `CryptoKit` (AES-GCM), salted per file, `.fvenc` output |
 | Face ID | `LocalAuthentication` |
 | Localization | a String Catalog (`Localizable.xcstrings`), English source + German |
-| App ↔ Share Extension | a named `UIPasteboard` + a custom URL scheme (`filemanager://`), no App Group, no entitlements at all |
+| App ↔ Share Extension | the system pasteboard + a custom URL scheme (`filemanager://`), no App Group, no entitlements at all |
 
 ```
 FileManager/
@@ -97,6 +97,7 @@ project.yml         XcodeGen project definition
 ## Known rough edges
 
 - Sharing a file in doesn't let you pick a destination folder anymore — it always lands in My Files, and you have to open FileManager afterwards for it to actually show up. That's the tradeoff for not needing an App Group (and therefore not needing a real, fully provisioned Apple Developer account) to make the Share Extension work.
+- Sending a file from the Share Sheet briefly replaces whatever's on your clipboard, since that's the handoff mechanism. It gets cleared out once FileManager picks the file up.
 - The Share Extension's own UI is English-only for now, regardless of your system language — only the main app is localized.
 - No landscape-optimized layout yet.
 - No iPad-specific split view.
