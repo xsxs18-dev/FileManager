@@ -9,6 +9,7 @@ struct FileBrowserView: View {
     @State private var items: [FileItem] = []
     @State private var activeSheet: ActiveSheet?
     @State private var itemPendingDelete: FileItem?
+    @State private var isConfirmingBulkDelete = false
     @State private var errorMessage: String?
     @State private var editMode: EditMode = .inactive
     @State private var selection = Set<FileItem>()
@@ -198,6 +199,13 @@ struct FileBrowserView: View {
                         Label("Create Zip (\(selection.count))", systemImage: "doc.zipper")
                     }
                     .foregroundStyle(FVColor.accent)
+                    Spacer()
+                    Button(role: .destructive) {
+                        isConfirmingBulkDelete = true
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                    .foregroundStyle(FVColor.danger)
                 }
             }
         }
@@ -371,6 +379,16 @@ struct FileBrowserView: View {
                 itemPendingDelete = nil
             }
             Button("Cancel", role: .cancel) { itemPendingDelete = nil }
+        }
+        .confirmationDialog(
+            "Delete \(selection.count) item(s)?",
+            isPresented: $isConfirmingBulkDelete,
+            titleVisibility: .visible
+        ) {
+            Button("Delete", role: .destructive) {
+                deleteSelection()
+            }
+            Button("Cancel", role: .cancel) {}
         }
         .onAppear(perform: reload)
     }
@@ -639,6 +657,19 @@ struct FileBrowserView: View {
         } catch {
             errorMessage = error.localizedDescription
         }
+    }
+
+    private func deleteSelection() {
+        for item in selection {
+            do {
+                try FileSystemService.shared.delete(item)
+            } catch {
+                errorMessage = error.localizedDescription
+            }
+        }
+        selection.removeAll()
+        editMode = .inactive
+        reload()
     }
 
     private func createZip(named name: String, password: String?) {
