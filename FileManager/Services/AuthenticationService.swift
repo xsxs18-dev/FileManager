@@ -17,12 +17,12 @@ final class AuthenticationService {
         let context = LAContext()
         var evaluationError: NSError?
         guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &evaluationError) else {
-            throw AuthenticationError.failed(evaluationError?.localizedDescription ?? "Authentication not available.")
+            throw AuthenticationError.failed(evaluationError?.localizedDescription ?? String(localized: "Authentication not available."))
         }
         do {
             let success = try await context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason)
             if !success {
-                throw AuthenticationError.failed("Authentication failed.")
+                throw AuthenticationError.failed(String(localized: "Authentication failed."))
             }
         } catch let error as AuthenticationError {
             throw error

@@ -18,11 +18,11 @@
 
 Files apps on iOS are fine for browsing, but the moment you want to actually *protect* something — a real password on a PDF, an encrypted zip, a folder nobody but you can open — you're stuck. FileManager is my answer to that: a sideloaded, no-account, no-backend file manager that treats security features as first-class, not an afterthought.
 
-Everything runs on-device. There's no server, no analytics, no account. The app never makes a network request — it doesn't even ask for one.
+Everything runs on-device. There's no server, no analytics, no account. The only thing FileManager will ever reach out to the internet for is an *optional*, manual check against this repo's GitHub releases from the Settings tab — nothing else, ever.
 
 ## What it does
 
-**Files & folders** — the basics, done properly: create folders and files, rename anything (including swapping the extension, `.txt` → `.pdf`, whatever), multi-select, delete, browse.
+**Files & folders** — the basics, done properly: create folders and files (with real content, not just empty placeholders), edit text files in place, rename anything (including swapping the extension, `.txt` → `.pdf`, whatever), multi-select, delete, browse. Tapping a file opens it — a Quick Look preview for most things, a plain-text editor for `.txt`.
 
 **Hidden & Face ID–locked folders** — mark a folder "hidden" and it's gone from normal browsing, only reachable from its own dedicated area. Separately, lock any folder behind Face ID / passcode. The two are independent, so you can mix and match.
 
@@ -30,7 +30,15 @@ Everything runs on-device. There's no server, no analytics, no account. The app 
 
 **ZIP, with real encryption** — create and extract zip archives from anything in the app. Password-protect them with AES-256. (`ZIPFoundation` doesn't support encrypted zips natively, so files are individually encrypted with `CryptoKit` before they ever get zipped.)
 
-**PDF tools** — build a PDF from a batch of photos, from typed text, or straight from the camera via a document scanner. Lock it with a real owner/user password through `PDFKit` — the kind of protection that works when you open the file in *any* PDF reader, not just this app.
+**Encrypt literally anything** — PDFs and ZIPs get their own proper encryption schemes (see below), and every other file type — photos, text, whatever — can be encrypted with a password straight from its context menu, using AES-GCM.
+
+**A dedicated PDF Creator tab** — combine photos from your library, images already sitting in your vault, a document scan, or typed text into a PDF, without having to dig through folders first.
+
+**Real PDF passwords** — lock a PDF with a real owner/user password through `PDFKit` — the kind of protection that works when you open the file in *any* PDF reader, not just this app.
+
+**Settings — pick your look** — four built-in themes (light blue/black, red/black, light blue/white, red/white), plus a one-tap check against this repo's latest release so you know when to update.
+
+**Speaks your language** — the UI follows your device's system language. Currently English and German; PRs for more are welcome.
 
 ## Screenshots
 
@@ -52,7 +60,7 @@ Set your own signing team in Xcode and build to a device.
 
 ### Don't have Xcode?
 
-Every push to `main` builds an **unsigned** `.ipa` automatically on GitHub Actions. Grab it from the [Releases](https://github.com/xsxs18-dev/FileManager/releases) page or the latest [Actions run](https://github.com/xsxs18-dev/FileManager/actions), then sign and install it with your own free (or paid) Apple ID using:
+Every push to `main` builds an **unsigned** `.ipa` on GitHub Actions and publishes it straight to a new [Release](https://github.com/xsxs18-dev/FileManager/releases) — one release per build, tagged `build-N`, with the raw `.ipa` attached as a downloadable asset (not zipped, unlike the Actions artifact tab). Grab the latest one and sign it with your own free (or paid) Apple ID using:
 
 - [Sideloadly](https://sideloadly.io/), or
 - [AltStore](https://altstore.io/) — handles the 7-day re-signing free accounts need automatically
@@ -64,28 +72,32 @@ Every push to `main` builds an **unsigned** `.ipa` automatically on GitHub Actio
 | UI | SwiftUI everywhere, except where iOS forces UIKit (the document scanner, the Share Extension host) |
 | PDF | `PDFKit` — creation, rendering, and real owner/user password encryption |
 | ZIP | [`ZIPFoundation`](https://github.com/weichsel/ZIPFoundation) for archiving, `CryptoKit` (AES-GCM) for encryption |
+| Generic file encryption | `CryptoKit` (AES-GCM), salted per file, `.fvenc` output |
 | Face ID | `LocalAuthentication` |
+| Localization | a String Catalog (`Localizable.xcstrings`), English source + German |
 | App ↔ Share Extension | one App Group container, no App Store, no cloud |
 
 ```
 FileManager/
 ├── App/            entry point
-├── DesignSystem/   colors, spacing, type, shared button/card styles
+├── DesignSystem/   colors, spacing, type, theme definitions, shared styles
 ├── Models/         FileItem, ZipManifest
 ├── Services/       FileSystemService, ZipService, PDFService, CryptoService,
-│                   AuthenticationService, FolderProtectionStore
+│                   FileEncryptionService, AuthenticationService,
+│                   FolderProtectionStore, ThemeManager, UpdateChecker
 ├── Shared/         App Group constants, shared with the extension
-├── Views/          screens and sheets
-└── Resources/      Assets.xcassets, Info.plist
+├── Views/          screens and sheets (Files tab, PDF Creator tab, Settings tab, ...)
+└── Resources/      Assets.xcassets, Info.plist, Localizable.xcstrings
 
 ShareExtension/     the Share Sheet extension target
 project.yml         XcodeGen project definition
-.github/workflows/  CI — builds an unsigned .ipa on every push
+.github/workflows/  CI — builds an unsigned .ipa and cuts a GitHub Release for every push
 ```
 
 ## Known rough edges
 
 - Since this is sideloaded rather than App Store–distributed, some free Apple ID signing tools are inconsistent about preserving the App Group entitlement. If shared files don't show up after using the Share Sheet, that's the most likely cause — re-sign with your Apple Developer account if you have one, or open an issue.
+- The Share Extension's own UI is English-only for now, regardless of your system language — only the main app is localized.
 - No landscape-optimized layout yet.
 - No iPad-specific split view.
 

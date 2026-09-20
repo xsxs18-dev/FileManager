@@ -80,7 +80,7 @@ struct ImagesToPDFSheet: View {
             }
             await MainActor.run {
                 images = loaded
-                if loaded.isEmpty { errorMessage = "Could not load images." } else { errorMessage = nil }
+                if loaded.isEmpty { errorMessage = String(localized: "Could not load images.") } else { errorMessage = nil }
             }
         }
     }

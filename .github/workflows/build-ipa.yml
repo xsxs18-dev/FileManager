@@ -5,6 +5,9 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: macos-14
@@ -27,6 +30,9 @@ jobs:
 
       - name: Generate Xcode project
         run: xcodegen generate
+
+      - name: Set build number
+        run: /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${{ github.run_number }}" FileManager/Resources/Info.plist
 
       - name: Resolve Swift packages
         run: xcodebuild -resolvePackageDependencies -project FileManager.xcodeproj -scheme FileManager
@@ -60,3 +66,15 @@ jobs:
           name: FileManager-unsigned-ipa
           path: FileManager-unsigned.ipa
           retention-days: 14
+
+      - name: Create release with the .ipa attached
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          TAG="build-${{ github.run_number }}"
+          gh release create "$TAG" FileManager-unsigned.ipa \
+            --repo "${{ github.repository }}" \
+            --title "FileManager build ${{ github.run_number }}" \
+            --notes "Automated build from commit ${{ github.sha }}. Unsigned .ipa — sign it locally with Sideloadly or AltStore using your own Apple ID before installing." \
+            --latest

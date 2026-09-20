@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct PasswordPromptSheet: View {
-    let title: String
-    let message: String?
-    let confirmTitle: String
+    let title: LocalizedStringKey
+    let message: LocalizedStringKey?
+    let confirmTitle: LocalizedStringKey
     let requiresConfirmation: Bool
     let onConfirm: (String) -> Void
 
@@ -14,9 +14,9 @@ struct PasswordPromptSheet: View {
     @FocusState private var isFocused: Bool
 
     init(
-        title: String,
-        message: String? = nil,
-        confirmTitle: String = "Confirm",
+        title: LocalizedStringKey,
+        message: LocalizedStringKey? = nil,
+        confirmTitle: LocalizedStringKey = "Confirm",
         requiresConfirmation: Bool = false,
         onConfirm: @escaping (String) -> Void
     ) {
@@ -83,7 +83,7 @@ struct PasswordPromptSheet: View {
 
     private func confirm() {
         if requiresConfirmation && password != confirmation {
-            errorMessage = "Passwords do not match."
+            errorMessage = String(localized: "Passwords do not match.")
             return
         }
         onConfirm(password)

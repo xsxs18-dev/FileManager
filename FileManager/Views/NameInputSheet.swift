@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct NameInputSheet: View {
-    let title: String
-    let placeholder: String
+    let title: LocalizedStringKey
+    let placeholder: LocalizedStringKey
     let initialValue: String
-    let confirmTitle: String
+    let confirmTitle: LocalizedStringKey
     let onConfirm: (String) -> Void
 
     @State private var name: String
@@ -13,10 +13,10 @@ struct NameInputSheet: View {
     @FocusState private var isFocused: Bool
 
     init(
-        title: String,
-        placeholder: String,
+        title: LocalizedStringKey,
+        placeholder: LocalizedStringKey,
         initialValue: String = "",
-        confirmTitle: String = "Create",
+        confirmTitle: LocalizedStringKey = "Create",
         onConfirm: @escaping (String) -> Void
     ) {
         self.title = title

@@ -3,7 +3,7 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         NavigationStack {
-            FileBrowserView(directory: FileSystemService.shared.rootURL, title: "My Files")
+            FileBrowserView(directory: FileSystemService.shared.rootURL, title: String(localized: "My Files"))
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         NavigationLink {

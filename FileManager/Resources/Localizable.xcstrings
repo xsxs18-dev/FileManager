@@ -1,0 +1,916 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "An item with this name already exists.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Es existiert bereits ein Element mit diesem Namen."
+          }
+        }
+      }
+    },
+    "Appearance": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erscheinungsbild"
+          }
+        }
+      }
+    },
+    "Archive name": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archivname"
+          }
+        }
+      }
+    },
+    "Authentication failed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authentifizierung fehlgeschlagen."
+          }
+        }
+      }
+    },
+    "Authentication not available.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authentifizierung nicht verfügbar."
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abbrechen"
+          }
+        }
+      }
+    },
+    "Check for Updates": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach Updates suchen"
+          }
+        }
+      }
+    },
+    "Checking…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird geprüft…"
+          }
+        }
+      }
+    },
+    "Close": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schließen"
+          }
+        }
+      }
+    },
+    "Combine images already in your vault": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bilder aus deinem Vault kombinieren"
+          }
+        }
+      }
+    },
+    "Combine photos, files, scans, or typed text into a PDF. New PDFs are saved to My Files.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kombiniere Fotos, Dateien, Scans oder Text zu einem PDF. Neue PDFs werden in „Meine Dateien“ gespeichert."
+          }
+        }
+      }
+    },
+    "Confirm": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestätigen"
+          }
+        }
+      }
+    },
+    "Confirm Password": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwort bestätigen"
+          }
+        }
+      }
+    },
+    "Confirm password": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwort bestätigen"
+          }
+        }
+      }
+    },
+    "Could not check for updates.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Update-Check fehlgeschlagen."
+          }
+        }
+      }
+    },
+    "Could not load images.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bilder konnten nicht geladen werden."
+          }
+        }
+      }
+    },
+    "Could not load the selected images.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgewählte Bilder konnten nicht geladen werden."
+          }
+        }
+      }
+    },
+    "Create": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erstellen"
+          }
+        }
+      }
+    },
+    "Create Zip": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zip erstellen"
+          }
+        }
+      }
+    },
+    "Decrypt": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entschlüsseln"
+          }
+        }
+      }
+    },
+    "Delete": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Löschen"
+          }
+        }
+      }
+    },
+    "Done": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fertig"
+          }
+        }
+      }
+    },
+    "Empty": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leer"
+          }
+        }
+      }
+    },
+    "Encrypt": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verschlüsseln"
+          }
+        }
+      }
+    },
+    "Encrypt File": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datei verschlüsseln"
+          }
+        }
+      }
+    },
+    "Encrypt PDF": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF verschlüsseln"
+          }
+        }
+      }
+    },
+    "Encrypt with password (AES-256)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit Passwort verschlüsseln (AES-256)"
+          }
+        }
+      }
+    },
+    "Encryption failed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verschlüsselung fehlgeschlagen."
+          }
+        }
+      }
+    },
+    "Enter Password": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwort eingeben"
+          }
+        }
+      }
+    },
+    "Error": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fehler"
+          }
+        }
+      }
+    },
+    "Export": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exportieren"
+          }
+        }
+      }
+    },
+    "Extract": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entpacken"
+          }
+        }
+      }
+    },
+    "File name": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dateiname"
+          }
+        }
+      }
+    },
+    "Files": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dateien"
+          }
+        }
+      }
+    },
+    "Folder name": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordnername"
+          }
+        }
+      }
+    },
+    "From Files": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus Dateien"
+          }
+        }
+      }
+    },
+    "From Photos": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus Fotos"
+          }
+        }
+      }
+    },
+    "From Text": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus Text"
+          }
+        }
+      }
+    },
+    "Hidden Area": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versteckter Bereich"
+          }
+        }
+      }
+    },
+    "Hide": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verstecken"
+          }
+        }
+      }
+    },
+    "Incorrect password.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Falsches Passwort."
+          }
+        }
+      }
+    },
+    "Invalid name.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ungültiger Name."
+          }
+        }
+      }
+    },
+    "Light Blue & Black": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hellblau & Schwarz"
+          }
+        }
+      }
+    },
+    "Light Blue & White": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hellblau & Weiß"
+          }
+        }
+      }
+    },
+    "Lock with Face ID": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit Face ID sperren"
+          }
+        }
+      }
+    },
+    "My Files": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meine Dateien"
+          }
+        }
+      }
+    },
+    "Name": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name"
+          }
+        }
+      }
+    },
+    "New File": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Datei"
+          }
+        }
+      }
+    },
+    "New Folder": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Ordner"
+          }
+        }
+      }
+    },
+    "New Text File": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Textdatei"
+          }
+        }
+      }
+    },
+    "No hidden folders": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine versteckten Ordner"
+          }
+        }
+      }
+    },
+    "No images found in your files": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Bilder in deinen Dateien gefunden"
+          }
+        }
+      }
+    },
+    "No items selected.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Elemente ausgewählt."
+          }
+        }
+      }
+    },
+    "No shareable file could be read from this item.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus diesem Element konnte keine teilbare Datei gelesen werden."
+          }
+        }
+      }
+    },
+    "No subfolders": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Unterordner"
+          }
+        }
+      }
+    },
+    "OK": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        }
+      }
+    },
+    "PDF Creator": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF-Ersteller"
+          }
+        }
+      }
+    },
+    "PDF from Images": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF aus Bildern"
+          }
+        }
+      }
+    },
+    "PDF from Text": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF aus Text"
+          }
+        }
+      }
+    },
+    "Password": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwort"
+          }
+        }
+      }
+    },
+    "Password Required": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwort erforderlich"
+          }
+        }
+      }
+    },
+    "Passwords do not match.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwörter stimmen nicht überein."
+          }
+        }
+      }
+    },
+    "Pick photos from your library": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotos aus deiner Mediathek wählen"
+          }
+        }
+      }
+    },
+    "Please enter a password.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bitte ein Passwort eingeben."
+          }
+        }
+      }
+    },
+    "Red & Black": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rot & Schwarz"
+          }
+        }
+      }
+    },
+    "Red & White": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rot & Weiß"
+          }
+        }
+      }
+    },
+    "Remove Face ID Lock": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Face-ID-Sperre entfernen"
+          }
+        }
+      }
+    },
+    "Rename": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umbenennen"
+          }
+        }
+      }
+    },
+    "Save": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speichern"
+          }
+        }
+      }
+    },
+    "Save Here": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hier speichern"
+          }
+        }
+      }
+    },
+    "Save PDF": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF speichern"
+          }
+        }
+      }
+    },
+    "Save Unlocked Copy": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entsperrte Version speichern"
+          }
+        }
+      }
+    },
+    "Scan Document": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dokument scannen"
+          }
+        }
+      }
+    },
+    "Select": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auswählen"
+          }
+        }
+      }
+    },
+    "Select Images": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bilder auswählen"
+          }
+        }
+      }
+    },
+    "Settings": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einstellungen"
+          }
+        }
+      }
+    },
+    "Tap to open the release on GitHub and install it there.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippen, um das Release auf GitHub zu öffnen und dort zu installieren."
+          }
+        }
+      }
+    },
+    "The PDF could not be created.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF konnte nicht erstellt werden."
+          }
+        }
+      }
+    },
+    "This PDF is not encrypted.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese PDF ist nicht verschlüsselt."
+          }
+        }
+      }
+    },
+    "This archive requires a password.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für dieses Archiv wird ein Passwort benötigt."
+          }
+        }
+      }
+    },
+    "This is not a valid encrypted FileManager file.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das ist keine gültige verschlüsselte FileManager-Datei."
+          }
+        }
+      }
+    },
+    "This is the only network request FileManager ever makes — it checks GitHub for the latest release tag and sends nothing else.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das ist die einzige Netzwerkanfrage, die FileManager überhaupt stellt — sie prüft bei GitHub den neuesten Release-Tag und sendet sonst nichts."
+          }
+        }
+      }
+    },
+    "Unhide": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einblenden"
+          }
+        }
+      }
+    },
+    "Unlock": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entsperren"
+          }
+        }
+      }
+    },
+    "Unlock with Face ID": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit Face ID entsperren"
+          }
+        }
+      }
+    },
+    "Updates": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Updates"
+          }
+        }
+      }
+    },
+    "Use your camera as a scanner": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Kamera als Scanner nutzen"
+          }
+        }
+      }
+    },
+    "Version": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version"
+          }
+        }
+      }
+    },
+    "Write or paste text and export it": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Text schreiben oder einfügen und exportieren"
+          }
+        }
+      }
+    },
+    "You're up to date.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du bist auf dem neuesten Stand."
+          }
+        }
+      }
+    },
+    "filename.ext": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dateiname.ext"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

@@ -4,6 +4,7 @@ options:
   deploymentTarget:
     iOS: "18.0"
   createIntermediateGroups: true
+  developmentLanguage: en
 packages:
   ZIPFoundation:
     url: https://github.com/weichsel/ZIPFoundation.git
@@ -29,6 +30,11 @@ targets:
           - UIInterfaceOrientationLandscapeRight
         NSCameraUsageDescription: "FileManager needs camera access to scan documents."
         NSFaceIDUsageDescription: "FileManager uses Face ID to unlock protected folders."
+        CFBundleVersion: "0"
+        CFBundleShortVersionString: "1.0"
+        CFBundleLocalizations:
+          - en
+          - de
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.xsxs18.FileManager
@@ -51,7 +57,9 @@ targets:
       - path: FileManager/Models/FileItem.swift
       - path: FileManager/Services/FileSystemService.swift
       - path: FileManager/Services/FolderProtectionStore.swift
+      - path: FileManager/Services/ThemeManager.swift
       - path: FileManager/DesignSystem/Theme.swift
+      - path: FileManager/DesignSystem/FVTheme.swift
       - path: FileManager/Views/NameInputSheet.swift
       - path: FileManager/Shared/AppGroup.swift
       - path: ShareExtension

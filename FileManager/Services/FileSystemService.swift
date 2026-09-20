@@ -8,9 +8,9 @@ enum FileSystemError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .alreadyExists:
-            return "An item with this name already exists."
+            return String(localized: "An item with this name already exists.")
         case .invalidName:
-            return "Invalid name."
+            return String(localized: "Invalid name.")
         case .underlying(let error):
             return error.localizedDescription
         }
@@ -43,6 +43,22 @@ final class FileSystemService {
             }
             return lhs.name.localizedStandardCompare(rhs.name) == .orderedAscending
         }
+    }
+
+    func allImageFiles(in directory: URL) -> [FileItem] {
+        let imageExtensions: Set<String> = ["jpg", "jpeg", "png", "heic", "heif", "gif", "bmp", "tiff"]
+        let protectionStore = FolderProtectionStore.shared
+        var results: [FileItem] = []
+        guard let items = try? contents(of: directory) else { return results }
+        for item in items {
+            if item.isDirectory {
+                guard !protectionStore.isHidden(item.url), !protectionStore.isLocked(item.url) else { continue }
+                results.append(contentsOf: allImageFiles(in: item.url))
+            } else if imageExtensions.contains(item.fileExtension.lowercased()) {
+                results.append(item)
+            }
+        }
+        return results
     }
 
     @discardableResult

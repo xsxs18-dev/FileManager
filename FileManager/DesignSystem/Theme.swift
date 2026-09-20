@@ -10,15 +10,15 @@ extension Color {
 }
 
 enum FVColor {
-    static let background = Color(hex: 0x000000)
-    static let surface = Color(hex: 0x121212)
-    static let surfaceElevated = Color(hex: 0x1C1C1E)
-    static let border = Color(hex: 0x2C2C2E)
-    static let accent = Color(hex: 0x4CC2FF)
-    static let accentMuted = Color(hex: 0x4CC2FF, alpha: 0.16)
-    static let textPrimary = Color.white
-    static let textSecondary = Color(hex: 0x9A9A9E)
-    static let danger = Color(hex: 0xFF6B6B)
+    static var background: Color { ThemeManager.shared.current.background }
+    static var surface: Color { ThemeManager.shared.current.surface }
+    static var surfaceElevated: Color { ThemeManager.shared.current.surfaceElevated }
+    static var border: Color { ThemeManager.shared.current.border }
+    static var accent: Color { ThemeManager.shared.current.accent }
+    static var accentMuted: Color { ThemeManager.shared.current.accentMuted }
+    static var textPrimary: Color { ThemeManager.shared.current.textPrimary }
+    static var textSecondary: Color { ThemeManager.shared.current.textSecondary }
+    static var danger: Color { ThemeManager.shared.current.danger }
 }
 
 enum FVSpacing {

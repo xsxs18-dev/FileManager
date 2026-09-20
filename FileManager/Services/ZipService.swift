@@ -9,8 +9,8 @@ enum ZipServiceError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .passwordRequired: return "This archive requires a password."
-        case .nothingToArchive: return "No items selected."
+        case .passwordRequired: return String(localized: "This archive requires a password.")
+        case .nothingToArchive: return String(localized: "No items selected.")
         case .underlying(let error): return error.localizedDescription
         }
     }

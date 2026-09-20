@@ -52,7 +52,7 @@ struct HiddenAreaView: View {
         .navigationTitle("Hidden Area")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(FVColor.background, for: .navigationBar)
-        .toolbarColorScheme(.dark, for: .navigationBar)
+        .toolbarColorScheme(ThemeManager.shared.current.colorScheme, for: .navigationBar)
         .onAppear(perform: reload)
         .onReceive(protectionStore.$hiddenPaths) { _ in reload() }
     }

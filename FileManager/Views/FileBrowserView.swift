@@ -30,6 +30,10 @@ struct FileBrowserView: View {
         case scanNaming
         case encryptPDF(FileItem)
         case decryptPDF(FileItem)
+        case newTextFile
+        case editText(FileItem)
+        case encryptFile(FileItem)
+        case decryptFile(FileItem)
 
         var id: String {
             switch self {
@@ -43,6 +47,10 @@ struct FileBrowserView: View {
             case .scanNaming: return "scanNaming"
             case .encryptPDF(let item): return "encryptPDF-\(item.id)"
             case .decryptPDF(let item): return "decryptPDF-\(item.id)"
+            case .newTextFile: return "newTextFile"
+            case .editText(let item): return "editText-\(item.id)"
+            case .encryptFile(let item): return "encryptFile-\(item.id)"
+            case .decryptFile(let item): return "decryptFile-\(item.id)"
             }
         }
     }
@@ -85,7 +93,7 @@ struct FileBrowserView: View {
         .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(FVColor.background, for: .navigationBar)
-        .toolbarColorScheme(.dark, for: .navigationBar)
+        .toolbarColorScheme(ThemeManager.shared.current.colorScheme, for: .navigationBar)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Menu {
@@ -100,7 +108,7 @@ struct FileBrowserView: View {
                         Label("New File", systemImage: "doc.badge.plus")
                     }
                     Button {
-                        createTextFile()
+                        activeSheet = .newTextFile
                     } label: {
                         Label("New Text File", systemImage: "doc.text")
                     }
@@ -208,6 +216,34 @@ struct FileBrowserView: View {
                     confirmTitle: "Unlock"
                 ) { password in
                     decryptPDF(item, password: password)
+                }
+            case .newTextFile:
+                NewTextFileSheet { name, content in
+                    createTextFile(named: name, content: content)
+                }
+            case .editText(let item):
+                TextFileEditorView(
+                    title: item.name,
+                    initialContent: (try? String(contentsOf: item.url, encoding: .utf8)) ?? ""
+                ) { content in
+                    saveTextFile(item, content: content)
+                }
+            case .encryptFile(let item):
+                PasswordPromptSheet(
+                    title: "Encrypt File",
+                    message: "Protect \"\(item.name)\" with a password (AES-256).",
+                    confirmTitle: "Encrypt",
+                    requiresConfirmation: true
+                ) { password in
+                    encryptFile(item, password: password)
+                }
+            case .decryptFile(let item):
+                PasswordPromptSheet(
+                    title: "Enter Password",
+                    message: "\"\(item.name)\" is encrypted.",
+                    confirmTitle: "Decrypt"
+                ) { password in
+                    decryptFile(item, password: password)
                 }
             }
         }
@@ -339,6 +375,22 @@ struct FileBrowserView: View {
                     }
                 }
             }
+            if !item.isDirectory {
+                let ext = item.fileExtension.lowercased()
+                if ext == FileEncryptionService.fileExtension {
+                    Button {
+                        activeSheet = .decryptFile(item)
+                    } label: {
+                        Label("Decrypt", systemImage: "lock.open")
+                    }
+                } else if ext != "pdf" && ext != "zip" {
+                    Button {
+                        activeSheet = .encryptFile(item)
+                    } label: {
+                        Label("Encrypt", systemImage: "lock")
+                    }
+                }
+            }
             Button(role: .destructive) {
                 itemPendingDelete = item
             } label: {
@@ -379,6 +431,7 @@ struct FileBrowserView: View {
         case "zip": return "doc.zipper"
         case "txt": return "doc.plaintext"
         case "jpg", "jpeg", "png", "heic": return "photo"
+        case FileEncryptionService.fileExtension: return "lock.doc"
         default: return "doc"
         }
     }
@@ -411,16 +464,37 @@ struct FileBrowserView: View {
         }
     }
 
-    private func createTextFile() {
+    private func createTextFile(named name: String, content: String) {
         do {
-            let base = "New File"
-            var candidate = "\(base).txt"
-            var counter = 1
-            while FileManager.default.fileExists(atPath: directory.appendingPathComponent(candidate).path) {
-                counter += 1
-                candidate = "\(base) \(counter).txt"
-            }
-            try FileSystemService.shared.createFile(named: candidate, in: directory)
+            let data = content.data(using: .utf8) ?? Data()
+            try FileSystemService.shared.createFile(named: name, in: directory, contents: data)
+            reload()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    private func saveTextFile(_ item: FileItem, content: String) {
+        do {
+            try (content.data(using: .utf8) ?? Data()).write(to: item.url)
+            reload()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    private func encryptFile(_ item: FileItem, password: String) {
+        do {
+            try FileEncryptionService.shared.encrypt(at: item.url, password: password)
+            reload()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    private func decryptFile(_ item: FileItem, password: String) {
+        do {
+            try FileEncryptionService.shared.decrypt(at: item.url, password: password)
             reload()
         } catch {
             errorMessage = error.localizedDescription
@@ -520,8 +594,13 @@ struct FileBrowserView: View {
     }
 
     private func openFile(_ item: FileItem) {
-        if item.fileExtension.lowercased() == "pdf" && PDFService.shared.isEncrypted(at: item.url) {
+        let ext = item.fileExtension.lowercased()
+        if ext == "pdf" && PDFService.shared.isEncrypted(at: item.url) {
             activeSheet = .decryptPDF(item)
+        } else if ext == FileEncryptionService.fileExtension {
+            activeSheet = .decryptFile(item)
+        } else if ext == "txt" {
+            activeSheet = .editText(item)
         } else {
             previewItem = item
         }

@@ -31,7 +31,7 @@ struct UnlockedPDFSheet: View {
                 .navigationTitle(originalName)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackground(FVColor.background, for: .navigationBar)
-                .toolbarColorScheme(.dark, for: .navigationBar)
+                .toolbarColorScheme(ThemeManager.shared.current.colorScheme, for: .navigationBar)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Close") { dismiss() }

@@ -78,11 +78,11 @@ struct ZipCreateSheet: View {
         guard !trimmedName.isEmpty else { return }
         if useEncryption {
             guard !password.isEmpty else {
-                errorMessage = "Please enter a password."
+                errorMessage = String(localized: "Please enter a password.")
                 return
             }
             guard password == confirmation else {
-                errorMessage = "Passwords do not match."
+                errorMessage = String(localized: "Passwords do not match.")
                 return
             }
         }
