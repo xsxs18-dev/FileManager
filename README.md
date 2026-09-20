@@ -80,3 +80,7 @@ Every push to `main` triggers a GitHub Actions workflow that builds an **unsigne
 
 - iOS 18.0+
 - No App Store account needed — designed for sideloading with a free or paid Apple Developer identity
+
+## License
+
+MIT — see [LICENSE](LICENSE).

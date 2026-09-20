@@ -42,25 +42,57 @@ final class ShareViewController: UIViewController {
             return
         }
 
+        let resultsLock = NSLock()
         var results: [ShareItem] = []
         let group = DispatchGroup()
 
         for provider in providers {
-            guard let identifier = provider.registeredTypeIdentifiers.first else { continue }
             group.enter()
-            provider.loadFileRepresentation(forTypeIdentifier: identifier) { url, error in
-                defer { group.leave() }
-                guard let url, error == nil else { return }
-                let tempURL = FileManager.default.temporaryDirectory
-                    .appendingPathComponent(UUID().uuidString)
-                    .appendingPathExtension(url.pathExtension)
-                try? FileManager.default.copyItem(at: url, to: tempURL)
-                results.append(ShareItem(suggestedName: url.lastPathComponent, temporaryURL: tempURL))
+            loadFile(from: provider) { item in
+                if let item {
+                    resultsLock.lock()
+                    results.append(item)
+                    resultsLock.unlock()
+                }
+                group.leave()
             }
         }
 
         group.notify(queue: .main) {
             completion(results)
+        }
+    }
+
+    private func loadFile(from provider: NSItemProvider, completion: @escaping (ShareItem?) -> Void) {
+        let identifiers = provider.registeredTypeIdentifiers
+        guard !identifiers.isEmpty else {
+            completion(nil)
+            return
+        }
+        tryLoad(from: provider, identifiers: identifiers, index: 0, completion: completion)
+    }
+
+    private func tryLoad(from provider: NSItemProvider, identifiers: [String], index: Int, completion: @escaping (ShareItem?) -> Void) {
+        guard index < identifiers.count else {
+            completion(nil)
+            return
+        }
+        provider.loadFileRepresentation(forTypeIdentifier: identifiers[index]) { [weak self] url, error in
+            guard let self else { return }
+            guard let url, error == nil else {
+                self.tryLoad(from: provider, identifiers: identifiers, index: index + 1, completion: completion)
+                return
+            }
+            let fileExtension = url.pathExtension.isEmpty ? "dat" : url.pathExtension
+            let tempURL = FileManager.default.temporaryDirectory
+                .appendingPathComponent(UUID().uuidString)
+                .appendingPathExtension(fileExtension)
+            do {
+                try FileManager.default.copyItem(at: url, to: tempURL)
+                completion(ShareItem(suggestedName: url.lastPathComponent, temporaryURL: tempURL))
+            } catch {
+                self.tryLoad(from: provider, identifiers: identifiers, index: index + 1, completion: completion)
+            }
         }
     }
 }

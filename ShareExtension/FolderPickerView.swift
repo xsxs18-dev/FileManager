@@ -61,7 +61,12 @@ private struct FolderPickerLevelView: View {
                     .scrollContentBackground(.hidden)
                 }
 
-                if let errorMessage {
+                if items.isEmpty {
+                    Text("No shareable file could be read from this item.")
+                        .font(FVFont.caption)
+                        .foregroundStyle(FVColor.danger)
+                        .padding(.horizontal, FVSpacing.md)
+                } else if let errorMessage {
                     Text(errorMessage)
                         .font(FVFont.caption)
                         .foregroundStyle(FVColor.danger)
@@ -114,7 +119,8 @@ private struct FolderPickerLevelView: View {
         for item in items {
             do {
                 let data = try Data(contentsOf: item.temporaryURL)
-                _ = try FileSystemService.shared.createFile(named: item.suggestedName, in: directory, contents: data)
+                let name = uniqueName(for: item.suggestedName, in: directory)
+                _ = try FileSystemService.shared.createFile(named: name, in: directory, contents: data)
                 try? FileManager.default.removeItem(at: item.temporaryURL)
             } catch {
                 errorMessage = error.localizedDescription
@@ -124,5 +130,17 @@ private struct FolderPickerLevelView: View {
         }
         isSaving = false
         onComplete()
+    }
+
+    private func uniqueName(for suggestedName: String, in directory: URL) -> String {
+        let base = (suggestedName as NSString).deletingPathExtension
+        let ext = (suggestedName as NSString).pathExtension
+        var candidate = suggestedName
+        var counter = 1
+        while FileManager.default.fileExists(atPath: directory.appendingPathComponent(candidate).path) {
+            counter += 1
+            candidate = ext.isEmpty ? "\(base) \(counter)" : "\(base) \(counter).\(ext)"
+        }
+        return candidate
     }
 }

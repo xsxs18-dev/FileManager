@@ -16,6 +16,7 @@ struct FileBrowserView: View {
     @State private var isScanning = false
     @State private var scannedImages: [UIImage] = []
     @State private var unlockedContext: UnlockedPDFContext?
+    @State private var previewItem: FileItem?
     @ObservedObject private var protectionStore = FolderProtectionStore.shared
 
     private enum ActiveSheet: Identifiable {
@@ -58,11 +59,21 @@ struct FileBrowserView: View {
 
             if items.isEmpty {
                 emptyState
-            } else {
+            } else if editMode == .active {
                 List(selection: $selection) {
                     ForEach(items) { item in
                         row(for: item)
                             .tag(item)
+                    }
+                }
+                .listStyle(.plain)
+                .scrollContentBackground(.hidden)
+                .background(FVColor.background)
+                .environment(\.editMode, $editMode)
+            } else {
+                List {
+                    ForEach(items) { item in
+                        row(for: item)
                     }
                 }
                 .listStyle(.plain)
@@ -218,6 +229,11 @@ struct FileBrowserView: View {
                 saveUnlockedCopy(context)
             }
         }
+        .fullScreenCover(item: $previewItem) { item in
+            FilePreviewSheet(item: item) {
+                previewItem = nil
+            }
+        }
         .alert("Error", isPresented: .constant(errorMessage != nil), presenting: errorMessage) { _ in
             Button("OK") { errorMessage = nil }
         } message: { message in
@@ -256,7 +272,12 @@ struct FileBrowserView: View {
                     rowLabel(for: item)
                 }
             } else {
-                rowLabel(for: item)
+                Button {
+                    openFile(item)
+                } label: {
+                    rowLabel(for: item)
+                }
+                .buttonStyle(.plain)
             }
         }
         .listRowBackground(FVColor.background)
@@ -495,6 +516,14 @@ struct FileBrowserView: View {
             unlockedContext = UnlockedPDFContext(document: document, item: item)
         } catch {
             errorMessage = error.localizedDescription
+        }
+    }
+
+    private func openFile(_ item: FileItem) {
+        if item.fileExtension.lowercased() == "pdf" && PDFService.shared.isEncrypted(at: item.url) {
+            activeSheet = .decryptPDF(item)
+        } else {
+            previewItem = item
         }
     }
 
