@@ -19,7 +19,9 @@ struct HiddenAreaView: View {
             } else {
                 List {
                     ForEach(items) { item in
-                        NavigationLink(value: item) {
+                        NavigationLink {
+                            FolderDestinationView(item: item)
+                        } label: {
                             HStack(spacing: FVSpacing.md) {
                                 Image(systemName: "folder.fill")
                                     .foregroundStyle(FVColor.accent)
@@ -54,9 +56,6 @@ struct HiddenAreaView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(FVColor.background, for: .navigationBar)
         .toolbarColorScheme(ThemeManager.shared.current.colorScheme, for: .navigationBar)
-        .navigationDestination(for: FileItem.self) { item in
-            FolderDestinationView(item: item)
-        }
         .onAppear(perform: reload)
     }
 

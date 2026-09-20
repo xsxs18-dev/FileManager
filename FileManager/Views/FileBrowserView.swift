@@ -340,7 +340,9 @@ struct FileBrowserView: View {
     private func row(for item: FileItem) -> some View {
         Group {
             if item.isDirectory {
-                NavigationLink(value: item) {
+                NavigationLink {
+                    FolderDestinationView(item: item)
+                } label: {
                     rowLabel(for: item)
                 }
             } else {

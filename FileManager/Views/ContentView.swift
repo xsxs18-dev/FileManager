@@ -14,9 +14,6 @@ struct ContentView: View {
                         }
                     }
                 }
-                .navigationDestination(for: FileItem.self) { item in
-                    FolderDestinationView(item: item)
-                }
         }
     }
 }

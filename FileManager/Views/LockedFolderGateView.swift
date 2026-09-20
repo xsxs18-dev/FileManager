@@ -51,6 +51,7 @@ struct LockedFolderGateView: View {
     }
 
     private func authenticate() async {
+        guard !isAuthenticating else { return }
         isAuthenticating = true
         errorMessage = nil
         do {
