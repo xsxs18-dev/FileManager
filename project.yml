@@ -1,0 +1,83 @@
+name: FileManager
+options:
+  bundleIdPrefix: com.xsxs18
+  deploymentTarget:
+    iOS: "18.0"
+  createIntermediateGroups: true
+packages:
+  ZIPFoundation:
+    url: https://github.com/weichsel/ZIPFoundation.git
+    from: 0.9.19
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+targets:
+  FileManager:
+    type: application
+    platform: iOS
+    sources:
+      - path: FileManager
+    info:
+      path: FileManager/Resources/Info.plist
+      properties:
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        NSCameraUsageDescription: "FileManager benötigt Kamerazugriff zum Scannen von Dokumenten."
+        NSFaceIDUsageDescription: "FileManager nutzt Face ID zum Entsperren geschützter Ordner."
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.xsxs18.FileManager
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        TARGETED_DEVICE_FAMILY: "1,2"
+    entitlements:
+      path: FileManager/FileManager.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.xsxs18.FileManager
+    dependencies:
+      - target: ShareExtension
+        embed: true
+      - package: ZIPFoundation
+
+  ShareExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: FileManager/Models/FileItem.swift
+      - path: FileManager/Services/FileSystemService.swift
+      - path: FileManager/Services/FolderProtectionStore.swift
+      - path: FileManager/DesignSystem/Theme.swift
+      - path: FileManager/Views/NameInputSheet.swift
+      - path: FileManager/Shared/AppGroup.swift
+      - path: ShareExtension
+    info:
+      path: ShareExtension/Info.plist
+      properties:
+        CFBundleDisplayName: FileManager
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.share-services
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShareViewController
+          NSExtensionAttributes:
+            NSExtensionActivationRule: TRUEPREDICATE
+    entitlements:
+      path: ShareExtension/ShareExtension.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.xsxs18.FileManager
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.xsxs18.FileManager.ShareExtension
+        TARGETED_DEVICE_FAMILY: "1,2"
+schemes:
+  FileManager:
+    build:
+      targets:
+        FileManager: all
+        ShareExtension: all
+    run:
+      config: Debug
