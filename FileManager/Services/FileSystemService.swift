@@ -31,6 +31,15 @@ final class FileSystemService {
         return url
     }
 
+    var secretRootURL: URL {
+        let documents = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let url = documents.appendingPathComponent("SecretVault", isDirectory: true)
+        if !fileManager.fileExists(atPath: url.path) {
+            try? fileManager.createDirectory(at: url, withIntermediateDirectories: true)
+        }
+        return url
+    }
+
     func contents(of directory: URL) throws -> [FileItem] {
         let urls = try fileManager.contentsOfDirectory(
             at: directory,
@@ -124,9 +133,34 @@ final class FileSystemService {
 
     func delete(_ item: FileItem) throws {
         do {
+            if FolderProtectionStore.shared.isSecureShredEnabled {
+                try shred(item.url)
+            }
             try fileManager.removeItem(at: item.url)
         } catch {
             throw FileSystemError.underlying(error)
+        }
+    }
+
+    private func shred(_ url: URL) throws {
+        var isDirectoryFlag: ObjCBool = false
+        guard fileManager.fileExists(atPath: url.path, isDirectory: &isDirectoryFlag) else { return }
+        if isDirectoryFlag.boolValue {
+            let children = try fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
+            for child in children {
+                try shred(child)
+            }
+        } else {
+            let handle = try FileHandle(forWritingTo: url)
+            defer { try? handle.close() }
+            let size = (try? url.resourceValues(forKeys: [.fileSizeKey]))?.fileSize ?? 0
+            let chunkSize = 65_536
+            var remaining = size
+            while remaining > 0 {
+                let thisChunk = min(chunkSize, remaining)
+                try handle.write(contentsOf: Data((0..<thisChunk).map { _ in UInt8.random(in: .min ... .max) }))
+                remaining -= thisChunk
+            }
         }
     }
 

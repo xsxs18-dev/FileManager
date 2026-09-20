@@ -6,14 +6,24 @@ final class FolderProtectionStore: ObservableObject {
 
     @Published private(set) var hiddenPaths: Set<String>
     @Published private(set) var lockedPaths: Set<String>
+    @Published private(set) var failedAttemptLimit: Int
+    @Published private(set) var isSecureShredEnabled: Bool
+
+    private var failedAttempts: [String: Int]
 
     private let defaults = UserDefaults.standard
     private let hiddenKey = "FileManager.hiddenPaths"
     private let lockedKey = "FileManager.lockedPaths"
+    private let failedAttemptsKey = "FileManager.failedAttempts"
+    private let failedAttemptLimitKey = "FileManager.failedAttemptLimit"
+    private let secureShredKey = "FileManager.secureShredEnabled"
 
     private init() {
         hiddenPaths = Set(defaults.stringArray(forKey: hiddenKey) ?? [])
         lockedPaths = Set(defaults.stringArray(forKey: lockedKey) ?? [])
+        failedAttempts = defaults.dictionary(forKey: failedAttemptsKey) as? [String: Int] ?? [:]
+        failedAttemptLimit = defaults.integer(forKey: failedAttemptLimitKey)
+        isSecureShredEnabled = defaults.bool(forKey: secureShredKey)
     }
 
     private func relativePath(for url: URL) -> String {
@@ -59,5 +69,32 @@ final class FolderProtectionStore: ObservableObject {
             guard FileManager.default.fileExists(atPath: url.path) else { return nil }
             return FileItem(url: url)
         }.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+    }
+
+    func setFailedAttemptLimit(_ limit: Int) {
+        failedAttemptLimit = limit
+        defaults.set(limit, forKey: failedAttemptLimitKey)
+    }
+
+    @discardableResult
+    func registerFailedAttempt(for url: URL) -> Bool {
+        let path = relativePath(for: url)
+        let count = (failedAttempts[path] ?? 0) + 1
+        failedAttempts[path] = count
+        defaults.set(failedAttempts, forKey: failedAttemptsKey)
+        guard failedAttemptLimit > 0 else { return false }
+        return count >= failedAttemptLimit
+    }
+
+    func resetFailedAttempts(for url: URL) {
+        let path = relativePath(for: url)
+        guard failedAttempts[path] != nil else { return }
+        failedAttempts.removeValue(forKey: path)
+        defaults.set(failedAttempts, forKey: failedAttemptsKey)
+    }
+
+    func setSecureShredEnabled(_ enabled: Bool) {
+        isSecureShredEnabled = enabled
+        defaults.set(enabled, forKey: secureShredKey)
     }
 }

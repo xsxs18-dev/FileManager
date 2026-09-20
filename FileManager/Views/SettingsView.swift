@@ -2,20 +2,69 @@ import SwiftUI
 
 struct SettingsView: View {
     @ObservedObject private var themeManager = ThemeManager.shared
+    @ObservedObject private var protectionStore = FolderProtectionStore.shared
     @State private var updateResult: UpdateCheckResult?
     @State private var updateError: String?
     @State private var isChecking = false
+    @State private var secretTapCount = 0
+    @State private var lastSecretTap = Date.distantPast
+    @State private var showSecretVault = false
 
     var body: some View {
         ZStack {
             FVColor.background.ignoresSafeArea()
             List {
                 Section {
+                    VStack(spacing: FVSpacing.sm) {
+                        Image(systemName: "gearshape.fill")
+                            .font(.system(size: 44))
+                            .foregroundStyle(FVColor.accent)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                registerSecretTap()
+                            }
+                        Text("FileManager")
+                            .font(FVFont.headline)
+                            .foregroundStyle(FVColor.textPrimary)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, FVSpacing.md)
+                    .listRowBackground(FVColor.background)
+                }
+
+                Section {
                     ForEach(FVThemeID.allCases) { id in
                         themeRow(for: id)
                     }
                 } header: {
                     Text("Appearance")
+                        .foregroundStyle(FVColor.textSecondary)
+                }
+                .listRowBackground(FVColor.surface)
+
+                Section {
+                    Toggle("Secure Delete", isOn: Binding(
+                        get: { protectionStore.isSecureShredEnabled },
+                        set: { protectionStore.setSecureShredEnabled($0) }
+                    ))
+                    .tint(FVColor.accent)
+                    .foregroundStyle(FVColor.textPrimary)
+
+                    Picker("Delete Folder After", selection: Binding(
+                        get: { protectionStore.failedAttemptLimit },
+                        set: { protectionStore.setFailedAttemptLimit($0) }
+                    )) {
+                        Text("Never").tag(0)
+                        Text("3 Attempts").tag(3)
+                        Text("5 Attempts").tag(5)
+                        Text("10 Attempts").tag(10)
+                    }
+                    .foregroundStyle(FVColor.textPrimary)
+                } header: {
+                    Text("Security")
+                        .foregroundStyle(FVColor.textSecondary)
+                } footer: {
+                    Text("Secure Delete overwrites a file's data with random bytes before removing it, so it's much harder to recover afterward. Slower than a normal delete, especially for large files.\n\n\"Delete Folder After\" applies to Face ID-locked folders: after that many failed unlock attempts in a row, the folder is deleted automatically. A cancelled Face ID prompt doesn't count toward the limit.")
                         .foregroundStyle(FVColor.textSecondary)
                 }
                 .listRowBackground(FVColor.surface)
@@ -88,6 +137,9 @@ struct SettingsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(FVColor.background, for: .navigationBar)
         .toolbarColorScheme(ThemeManager.shared.current.colorScheme, for: .navigationBar)
+        .fullScreenCover(isPresented: $showSecretVault) {
+            SecretVaultGateView()
+        }
     }
 
     private func themeRow(for id: FVThemeID) -> some View {
@@ -115,6 +167,19 @@ struct SettingsView: View {
     private var currentVersionLabel: String {
         let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "dev"
         return String(localized: "build \(build)")
+    }
+
+    private func registerSecretTap() {
+        let now = Date()
+        if now.timeIntervalSince(lastSecretTap) > 1.5 {
+            secretTapCount = 0
+        }
+        lastSecretTap = now
+        secretTapCount += 1
+        if secretTapCount >= 7 {
+            secretTapCount = 0
+            showSecretVault = true
+        }
     }
 
     private func checkForUpdate() {

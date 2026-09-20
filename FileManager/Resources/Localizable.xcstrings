@@ -1,6 +1,36 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "10 Attempts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "10 Versuchen"
+          }
+        }
+      }
+    },
+    "3 Attempts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 Versuchen"
+          }
+        }
+      }
+    },
+    "5 Attempts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5 Versuchen"
+          }
+        }
+      }
+    },
     "An item with this name already exists.": {
       "localizations": {
         "de": {
@@ -27,6 +57,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Archivname"
+          }
+        }
+      }
+    },
+    "Authentication cancelled.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authentifizierung abgebrochen."
           }
         }
       }
@@ -231,6 +271,16 @@
         }
       }
     },
+    "Delete Folder After": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordner löschen nach"
+          }
+        }
+      }
+    },
     "Done": {
       "localizations": {
         "de": {
@@ -367,6 +417,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Von anderen Apps hierher geteilte Dateien landen beim nächsten Öffnen von FileManager in „Meine Dateien“."
+          }
+        }
+      }
+    },
+    "Folder Deleted": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordner gelöscht"
           }
         }
       }
@@ -537,6 +597,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Name"
+          }
+        }
+      }
+    },
+    "Never": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie"
           }
         }
       }
@@ -801,6 +871,46 @@
         }
       }
     },
+    "Secret Vault": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geheimer Vault"
+          }
+        }
+      }
+    },
+    "Secret Vault Deleted": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geheimer Vault gelöscht"
+          }
+        }
+      }
+    },
+    "Secure Delete": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicheres Löschen"
+          }
+        }
+      }
+    },
+    "Secure Delete overwrites a file's data with random bytes before removing it, so it's much harder to recover afterward. Slower than a normal delete, especially for large files.\n\n\"Delete Folder After\" applies to Face ID-locked folders: after that many failed unlock attempts in a row, the folder is deleted automatically. A cancelled Face ID prompt doesn't count toward the limit.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicheres Löschen überschreibt die Daten einer Datei mit Zufallswerten, bevor sie entfernt wird, damit sie danach viel schwerer wiederherstellbar ist. Langsamer als normales Löschen, besonders bei großen Dateien.\n\n„Ordner löschen nach\" gilt für Face-ID-gesperrte Ordner: Nach so vielen fehlgeschlagenen Entsperrversuchen in Folge wird der Ordner automatisch gelöscht. Ein abgebrochener Face-ID-Versuch zählt nicht mit."
+          }
+        }
+      }
+    },
     "Select": {
       "localizations": {
         "de": {
@@ -867,6 +977,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "PDF konnte nicht erstellt werden."
+          }
+        }
+      }
+    },
+    "The secret vault was wiped after too many failed unlock attempts.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der geheime Vault wurde nach zu vielen fehlgeschlagenen Entsperrversuchen gelöscht."
           }
         }
       }
