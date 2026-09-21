@@ -15,11 +15,19 @@
       "category": "utilities",
       "version": "1.3.1",
       "versionDate": "2026-09-21",
-      "versionDescription": "- Fix Share Sheet not reopening the app, dropped files, and Import Photo\n- Update AltStore source for build 23",
-      "downloadURL": "https://github.com/xsxs18-dev/FileManager/releases/download/build-24/FileManager-unsigned.ipa",
-      "size": 2944925,
+      "versionDescription": "- Name Feather explicitly on the AltStore CTA card\n- Make README easier to scan, add a glowing one-tap AltStore CTA\n- Update AltStore source for build 24",
+      "downloadURL": "https://github.com/xsxs18-dev/FileManager/releases/download/build-25/FileManager-unsigned.ipa",
+      "size": 2944926,
       "minOSVersion": "18.0",
       "versions": [
+        {
+          "version": "1.3.1",
+          "date": "2026-09-21",
+          "localizedDescription": "- Name Feather explicitly on the AltStore CTA card\n- Make README easier to scan, add a glowing one-tap AltStore CTA\n- Update AltStore source for build 24",
+          "downloadURL": "https://github.com/xsxs18-dev/FileManager/releases/download/build-25/FileManager-unsigned.ipa",
+          "size": 2944926,
+          "minOSVersion": "18.0"
+        },
         {
           "version": "1.3.1",
           "date": "2026-09-21",
