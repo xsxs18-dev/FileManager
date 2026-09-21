@@ -13,13 +13,21 @@
       "iconURL": "https://raw.githubusercontent.com/xsxs18-dev/FileManager/main/FileManager/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png",
       "tintColor": "#4CC2FF",
       "category": "utilities",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "versionDate": "2026-09-21",
-      "versionDescription": "- Add an in-app changelog and show the real app version in Settings\n- Update AltStore source for build 22",
-      "downloadURL": "https://github.com/xsxs18-dev/FileManager/releases/download/build-23/FileManager-unsigned.ipa",
-      "size": 2942568,
+      "versionDescription": "- Fix Share Sheet not reopening the app, dropped files, and Import Photo\n- Update AltStore source for build 23",
+      "downloadURL": "https://github.com/xsxs18-dev/FileManager/releases/download/build-24/FileManager-unsigned.ipa",
+      "size": 2944925,
       "minOSVersion": "18.0",
       "versions": [
+        {
+          "version": "1.3.1",
+          "date": "2026-09-21",
+          "localizedDescription": "- Fix Share Sheet not reopening the app, dropped files, and Import Photo\n- Update AltStore source for build 23",
+          "downloadURL": "https://github.com/xsxs18-dev/FileManager/releases/download/build-24/FileManager-unsigned.ipa",
+          "size": 2944925,
+          "minOSVersion": "18.0"
+        },
         {
           "version": "1.3.0",
           "date": "2026-09-21",
