@@ -13,13 +13,21 @@
       "iconURL": "https://raw.githubusercontent.com/xsxs18-dev/FileManager/main/FileManager/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png",
       "tintColor": "#4CC2FF",
       "category": "utilities",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "versionDate": "2026-09-21",
-      "versionDescription": "- Fix AltStore source version mismatch, bump to 1.1.0\n- Update AltStore source for build 20",
-      "downloadURL": "https://github.com/xsxs18-dev/FileManager/releases/download/build-21/FileManager-unsigned.ipa",
-      "size": 2902596,
+      "versionDescription": "- Add photo library import, best-effort share sheet folder targeting\n- Update AltStore source for build 21",
+      "downloadURL": "https://github.com/xsxs18-dev/FileManager/releases/download/build-22/FileManager-unsigned.ipa",
+      "size": 2923347,
       "minOSVersion": "18.0",
       "versions": [
+        {
+          "version": "1.2.0",
+          "date": "2026-09-21",
+          "localizedDescription": "- Add photo library import, best-effort share sheet folder targeting\n- Update AltStore source for build 21",
+          "downloadURL": "https://github.com/xsxs18-dev/FileManager/releases/download/build-22/FileManager-unsigned.ipa",
+          "size": 2923347,
+          "minOSVersion": "18.0"
+        },
         {
           "version": "1.1.0",
           "date": "2026-09-21",
