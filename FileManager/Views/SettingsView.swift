@@ -90,6 +90,13 @@ struct SettingsView: View {
                     .foregroundStyle(FVColor.accent)
                     .disabled(isChecking)
 
+                    NavigationLink {
+                        ChangelogView()
+                    } label: {
+                        Text("Changelog")
+                            .foregroundStyle(FVColor.accent)
+                    }
+
                     if let updateResult {
                         if updateResult.isUpdateAvailable {
                             Link(destination: updateResult.releaseURL) {
@@ -115,7 +122,7 @@ struct SettingsView: View {
                     Text("Updates")
                         .foregroundStyle(FVColor.textSecondary)
                 } footer: {
-                    Text("This is the only network request FileManager ever makes — it checks GitHub for the latest release tag and sends nothing else.")
+                    Text("These are the only network requests FileManager ever makes — checking GitHub for release info and nothing else.")
                         .foregroundStyle(FVColor.textSecondary)
                 }
                 .listRowBackground(FVColor.surface)
@@ -166,8 +173,9 @@ struct SettingsView: View {
     }
 
     private var currentVersionLabel: String {
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
         let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "dev"
-        return String(localized: "build \(build)")
+        return "\(version) (build \(build))"
     }
 
     private func registerSecretTap() {

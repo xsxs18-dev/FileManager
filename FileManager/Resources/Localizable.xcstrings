@@ -1001,16 +1001,6 @@
         }
       }
     },
-    "This is the only network request FileManager ever makes — it checks GitHub for the latest release tag and sends nothing else.": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Das ist die einzige Netzwerkanfrage, die FileManager überhaupt stellt — sie prüft bei GitHub den neuesten Release-Tag und sendet sonst nichts."
-          }
-        }
-      }
-    },
     "Unhide": {
       "localizations": {
         "de": {
@@ -1107,6 +1097,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Foto importieren"
+          }
+        }
+      }
+    },
+    "Changelog": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Änderungen"
+          }
+        }
+      }
+    },
+    "Retry": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erneut versuchen"
+          }
+        }
+      }
+    },
+    "These are the only network requests FileManager ever makes — checking GitHub for release info and nothing else.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das sind die einzigen Netzwerkanfragen, die FileManager überhaupt stellt — sie prüfen bei GitHub Release-Infos ab und senden sonst nichts."
           }
         }
       }

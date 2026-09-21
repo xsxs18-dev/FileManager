@@ -94,7 +94,7 @@ An opt-in toggle, visible in Settings, that overwrites a file's bytes with rando
 
 ### Themes and Settings
 
-Four built-in themes (light blue/black, red/black, light blue/white, red/white), plus a one-tap check against this repo's latest release so you know when to update.
+Four built-in themes (light blue/black, red/black, light blue/white, red/white), plus a one-tap check against this repo's latest release so you know when to update. Settings shows your current version and build number, and a Changelog screen lists what changed in every past release, pulled straight from GitHub Releases.
 
 ### Localization
 
