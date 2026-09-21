@@ -73,13 +73,17 @@ Every push to `main` builds an **unsigned** `.ipa` on GitHub Actions and publish
 
 ### Or add it as an AltStore source
 
-FileManager also publishes itself as an [AltStore](https://altstore.io/) / [AltStore PAL](https://faq.altstore.io/altstore-pal/general) source, so new builds show up as an update in AltStore directly instead of you having to check the Releases page by hand. In AltStore, go to **Browse → Sources → Add Source** and paste:
+FileManager also publishes itself as an [AltStore](https://altstore.io/) source, so new builds show up as an update in AltStore directly instead of you having to check the Releases page by hand.
+
+[**Tap to add the source directly**](altstore://source?url=https://raw.githubusercontent.com/xsxs18-dev/FileManager/main/altstore-source.json) (on-device, with AltStore installed), or add it manually in AltStore under **Browse → Sources → Add Source**:
 
 ```
 https://raw.githubusercontent.com/xsxs18-dev/FileManager/main/altstore-source.json
 ```
 
 The source file itself gets updated automatically by CI on every build, right alongside the release.
+
+Note: this only works with **AltStore Classic**, not AltStore PAL — PAL requires every app to pass Apple's notarization process under a paid Apple Developer account, which is exactly what this project avoids needing.
 
 ## How it's built
 
