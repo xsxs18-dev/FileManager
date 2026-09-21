@@ -36,6 +36,11 @@ jobs:
       - name: Set build number
         run: /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${{ github.run_number }}" FileManager/Resources/Info.plist
 
+      - name: Read app version
+        run: |
+          VERSION=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" FileManager/Resources/Info.plist)
+          echo "APP_VERSION=$VERSION" >> "$GITHUB_ENV"
+
       - name: Resolve Swift packages
         run: xcodebuild -resolvePackageDependencies -project FileManager.xcodeproj -scheme FileManager
 
@@ -92,7 +97,7 @@ jobs:
           TAG="build-${{ github.run_number }}"
           gh release create "$TAG" FileManager-unsigned.ipa \
             --repo "${{ github.repository }}" \
-            --title "FileManager build ${{ github.run_number }}" \
+            --title "FileManager ${{ env.APP_VERSION }} (build ${{ github.run_number }})" \
             --notes-file changelog.md \
             --latest
 
@@ -102,7 +107,7 @@ jobs:
         run: |
           set -e
           TAG="build-${{ github.run_number }}"
-          VERSION="1.0.${{ github.run_number }}"
+          VERSION="${{ env.APP_VERSION }}"
           DATE=$(date -u +"%Y-%m-%d")
           SIZE=$(stat -f%z FileManager-unsigned.ipa)
           DOWNLOAD_URL="https://github.com/${{ github.repository }}/releases/download/${TAG}/FileManager-unsigned.ipa"

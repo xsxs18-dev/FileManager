@@ -11,7 +11,7 @@
       "subtitle": "Real security for your files, nothing else",
       "localizedDescription": "FileManager is a local, sideloaded file manager for iOS that treats security as a first-class feature instead of an afterthought. Hide folders, lock them behind Face ID, password-protect PDFs with a real owner/user password, and build AES-256 encrypted zip archives, all without an account, a server, or any analytics. A hidden second vault and a configurable self-destruct after repeated failed Face ID attempts are built in for anything that needs to stay truly private.",
       "iconURL": "https://raw.githubusercontent.com/xsxs18-dev/FileManager/main/FileManager/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png",
-      "tintColor": "4CC2FF",
+      "tintColor": "#4CC2FF",
       "category": "utilities",
       "version": "1.0.20",
       "versionDate": "2026-09-21",
