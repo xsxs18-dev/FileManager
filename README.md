@@ -71,6 +71,16 @@ Every push to `main` builds an **unsigned** `.ipa` on GitHub Actions and publish
 - [Sideloadly](https://sideloadly.io/), or
 - [AltStore](https://altstore.io/) — handles the 7-day re-signing free accounts need automatically
 
+### Or add it as an AltStore source
+
+FileManager also publishes itself as an [AltStore](https://altstore.io/) / [AltStore PAL](https://faq.altstore.io/altstore-pal/general) source, so new builds show up as an update in AltStore directly instead of you having to check the Releases page by hand. In AltStore, go to **Browse → Sources → Add Source** and paste:
+
+```
+https://raw.githubusercontent.com/xsxs18-dev/FileManager/main/altstore-source.json
+```
+
+The source file itself gets updated automatically by CI on every build, right alongside the release.
+
 ## How it's built
 
 | | |
