@@ -25,6 +25,18 @@ Files apps on iOS are fine for browsing, but the moment you want to actually *pr
 
 Everything runs on-device. There's no server, no analytics, no account. The only thing FileManager will ever reach out to the internet for is an *optional*, manual check against this repo's GitHub releases from the Settings tab — nothing else, ever.
 
+<p align="center">
+  <a href="altstore://source?url=https://raw.githubusercontent.com/xsxs18-dev/FileManager/main/altstore-source.json">
+    <img src=".github/readme/altstore-cta.svg" alt="Add to AltStore — one-tap install">
+  </a>
+</p>
+
+<p align="center">On-device, tap the card above. In SideStore, Feather, or anywhere else that asks for a source URL, copy exactly this link — <strong>not</strong> the address of this GitHub page:</p>
+
+<p align="center"><code>https://raw.githubusercontent.com/xsxs18-dev/FileManager/main/altstore-source.json</code></p>
+
+<p align="center">Add that once and every future release shows up as an update automatically — see <a href="#add-it-to-altstore-sidestore-or-feather">below</a> for details.</p>
+
 ## Contents
 
 - [What it does](#what-it-does)
@@ -42,8 +54,9 @@ Everything runs on-device. There's no server, no analytics, no account. The only
   - [Localization](#localization)
 - [Screenshots](#screenshots)
 - [Getting it running](#getting-it-running)
-  - [Don't have Xcode?](#dont-have-xcode)
-  - [Or add it as an AltStore source](#or-add-it-as-an-altstore-source)
+  - [Add it to AltStore, SideStore, or Feather](#add-it-to-altstore-sidestore-or-feather)
+  - [Download and sign manually](#download-and-sign-manually)
+  - [Build from source](#build-from-source)
 - [How it's built](#how-its-built)
 - [Known rough edges](#known-rough-edges)
 - [License](#license)
@@ -106,6 +119,29 @@ The UI follows your device's system language. Currently English and German; PRs 
 
 ## Getting it running
 
+### Add it to AltStore, SideStore, or Feather
+
+This is the easiest way, and the only one where updates find you automatically instead of the other way around. FileManager publishes itself as an [AltStore](https://altstore.io/) source — add it once, and every new release shows up as an update in the app, no GitHub visits required.
+
+[**Tap to add the source directly**](altstore://source?url=https://raw.githubusercontent.com/xsxs18-dev/FileManager/main/altstore-source.json) if you're reading this on the device you want to install to. Otherwise, add it manually — in AltStore that's **Browse → Sources → Add Source**; in SideStore or Feather, look for **Add Source** / **Repos** — and paste exactly this URL:
+
+```
+https://raw.githubusercontent.com/xsxs18-dev/FileManager/main/altstore-source.json
+```
+
+That's `raw.githubusercontent.com`, not `github.com` — the plain repo link above is a webpage for humans to read, not a source file a sideloading app can parse, and pasting it in will just silently do nothing.
+
+> Note: this only works with **AltStore Classic** and its compatible clients (SideStore, Feather), not **AltStore PAL** — PAL requires every app to pass Apple's notarization process under a paid Apple Developer account, which is exactly what this project avoids needing.
+
+### Download and sign manually
+
+Every push to `main` builds an **unsigned** `.ipa` on GitHub Actions and publishes it straight to a new [Release](https://github.com/xsxs18-dev/FileManager/releases) — one release per build, tagged `build-N`, with the raw `.ipa` attached as a downloadable asset (not zipped, unlike the Actions artifact tab). Grab the latest one and sign it with your own free (or paid) Apple ID using:
+
+- [Sideloadly](https://sideloadly.io/), or
+- [AltStore](https://altstore.io/) — handles the 7-day re-signing free accounts need automatically
+
+### Build from source
+
 You'll need a Mac with Xcode and [XcodeGen](https://github.com/yonaskolb/XcodeGen) (the `.xcodeproj` isn't committed — it's generated from `project.yml`):
 
 ```bash
@@ -117,27 +153,6 @@ open FileManager.xcodeproj
 ```
 
 Set your own signing team in Xcode and build to a device.
-
-### Don't have Xcode?
-
-Every push to `main` builds an **unsigned** `.ipa` on GitHub Actions and publishes it straight to a new [Release](https://github.com/xsxs18-dev/FileManager/releases) — one release per build, tagged `build-N`, with the raw `.ipa` attached as a downloadable asset (not zipped, unlike the Actions artifact tab). Grab the latest one and sign it with your own free (or paid) Apple ID using:
-
-- [Sideloadly](https://sideloadly.io/), or
-- [AltStore](https://altstore.io/) — handles the 7-day re-signing free accounts need automatically
-
-### Or add it as an AltStore source
-
-FileManager also publishes itself as an [AltStore](https://altstore.io/) source, so new builds show up as an update in AltStore directly instead of you having to check the Releases page by hand.
-
-[**Tap to add the source directly**](altstore://source?url=https://raw.githubusercontent.com/xsxs18-dev/FileManager/main/altstore-source.json) (on-device, with AltStore installed), or add it manually in AltStore under **Browse → Sources → Add Source**:
-
-```
-https://raw.githubusercontent.com/xsxs18-dev/FileManager/main/altstore-source.json
-```
-
-The source file itself gets updated automatically by CI on every build, right alongside the release.
-
-> Note: this only works with **AltStore Classic**, not AltStore PAL — PAL requires every app to pass Apple's notarization process under a paid Apple Developer account, which is exactly what this project avoids needing.
 
 ## How it's built
 
