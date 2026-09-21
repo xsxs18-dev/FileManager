@@ -1,6 +1,8 @@
 import SwiftUI
 import UIKit
 import PDFKit
+import PhotosUI
+import UniformTypeIdentifiers
 
 struct FileBrowserView: View {
     let directory: URL
@@ -15,6 +17,7 @@ struct FileBrowserView: View {
     @State private var selection = Set<FileItem>()
     @State private var activeCover: ActiveCover?
     @State private var scannedImages: [UIImage] = []
+    @State private var photoPickerItems: [PhotosPickerItem] = []
     @ObservedObject private var protectionStore = FolderProtectionStore.shared
 
     private enum ActiveSheet: Identifiable {
@@ -138,6 +141,9 @@ struct FileBrowserView: View {
                         activeCover = .importPicker
                     } label: {
                         Label("Import File", systemImage: "square.and.arrow.down")
+                    }
+                    PhotosPicker(selection: $photoPickerItems, matching: .any(of: [.images, .videos])) {
+                        Label("Import Photo", systemImage: "photo.badge.plus")
                     }
                     Divider()
                     Button {
@@ -391,6 +397,9 @@ struct FileBrowserView: View {
             Button("Cancel", role: .cancel) {}
         }
         .onAppear(perform: reload)
+        .onChange(of: photoPickerItems) { _, newItems in
+            importPhotos(newItems)
+        }
     }
 
     private var emptyState: some View {
@@ -584,6 +593,24 @@ struct FileBrowserView: View {
             }
         }
         reload()
+    }
+
+    private func importPhotos(_ pickerItems: [PhotosPickerItem]) {
+        guard !pickerItems.isEmpty else { return }
+        Task {
+            for pickerItem in pickerItems {
+                guard let data = try? await pickerItem.loadTransferable(type: Data.self) else { continue }
+                let contentType = pickerItem.supportedContentTypes.first
+                let fileExtension = contentType?.preferredFilenameExtension ?? "jpg"
+                let baseName = contentType?.conforms(to: .movie) == true ? "Video" : "Photo"
+                let name = FileSystemService.shared.uniqueName(for: "\(baseName).\(fileExtension)", in: directory)
+                try? FileSystemService.shared.createFile(named: name, in: directory, contents: data)
+            }
+            await MainActor.run {
+                photoPickerItems = []
+                reload()
+            }
+        }
     }
 
     private func createFolder(named name: String) {

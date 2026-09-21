@@ -7,6 +7,8 @@ struct PendingImportQueueView: View {
 
     @State private var isQueuing = false
     @State private var errorMessage: String?
+    @State private var availableFolders: [String] = []
+    @State private var selectedFolder = ""
 
     var body: some View {
         NavigationStack {
@@ -20,11 +22,40 @@ struct PendingImportQueueView: View {
                     Text("Send \(items.count) file(s) to FileManager")
                         .font(FVFont.headline)
                         .foregroundStyle(FVColor.textPrimary)
-                    Text("Open FileManager afterwards to finish bringing these into My Files. This briefly uses the system clipboard to hand the files over, so whatever you last copied will be replaced.")
-                        .font(FVFont.caption)
-                        .foregroundStyle(FVColor.textSecondary)
-                        .multilineTextAlignment(.center)
+                    if !availableFolders.isEmpty {
+                        Menu {
+                            Button("My Files") { selectedFolder = "" }
+                            ForEach(availableFolders, id: \.self) { folder in
+                                Button(folder) { selectedFolder = folder }
+                            }
+                        } label: {
+                            HStack {
+                                Text("Destination")
+                                    .foregroundStyle(FVColor.textPrimary)
+                                Spacer()
+                                Text(selectedFolder.isEmpty ? "My Files" : selectedFolder)
+                                    .foregroundStyle(FVColor.textSecondary)
+                                Image(systemName: "chevron.up.chevron.down")
+                                    .font(.caption)
+                                    .foregroundStyle(FVColor.textSecondary)
+                            }
+                            .padding()
+                            .background(FVColor.surface)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
                         .padding(.horizontal, FVSpacing.lg)
+                        Text("This list is from the last time you had FileManager open. Open FileManager first if a folder you expect is missing.")
+                            .font(FVFont.caption)
+                            .foregroundStyle(FVColor.textSecondary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, FVSpacing.lg)
+                    } else {
+                        Text("Open FileManager afterwards to finish bringing these into My Files. This briefly uses the system clipboard to hand the files over, so whatever you last copied will be replaced.")
+                            .font(FVFont.caption)
+                            .foregroundStyle(FVColor.textSecondary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, FVSpacing.lg)
+                    }
                     if let errorMessage {
                         Text(errorMessage)
                             .font(FVFont.caption)
@@ -58,6 +89,9 @@ struct PendingImportQueueView: View {
         }
         .preferredColorScheme(.dark)
         .tint(FVColor.accent)
+        .onAppear {
+            availableFolders = FolderIndexStore.readFolders() ?? []
+        }
     }
 
     private func queue() {
@@ -73,7 +107,7 @@ struct PendingImportQueueView: View {
                 isQueuing = false
                 return
             }
-            queued.append(PendingImportStore.Item(name: item.suggestedName, data: data))
+            queued.append(PendingImportStore.Item(name: item.suggestedName, data: data, destinationPath: selectedFolder))
         }
 
         guard !queued.isEmpty else {

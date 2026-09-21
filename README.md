@@ -52,7 +52,7 @@ Everything runs on-device. There's no server, no analytics, no account. The only
 
 ### Files and Folders
 
-The basics, done properly: create folders and files (with real content, not just empty placeholders), edit text files in place, rename anything (including swapping the extension, `.txt` → `.pdf`, whatever), multi-select, delete, browse. Tapping a file opens it — a Quick Look preview for most things (including audio and video, like `.mp3`/`.mp4`/`.wav`), a plain-text editor for `.txt`. An "Import File" button pulls in any file type from Files, iCloud Drive, or any other app's document provider. Move or copy a file into any other folder (hidden and locked folders never show up as destinations), or hand it off to any other app through the system share sheet — one at a time or with a whole multi-selected batch.
+The basics, done properly: create folders and files (with real content, not just empty placeholders), edit text files in place, rename anything (including swapping the extension, `.txt` → `.pdf`, whatever), multi-select, delete, browse. Tapping a file opens it — a Quick Look preview for most things (including audio and video, like `.mp3`/`.mp4`/`.wav`), a plain-text editor for `.txt`. An "Import File" button pulls in any file type from Files, iCloud Drive, or any other app's document provider, and "Import Photo" pulls photos and videos straight from your photo library through Apple's picker — no photo library permission needed, since the system hands over only what you actually pick. Move or copy a file into any other folder (hidden and locked folders never show up as destinations), or hand it off to any other app through the system share sheet — one at a time or with a whole multi-selected batch.
 
 ### Hidden and Face ID-Locked Folders
 
@@ -68,7 +68,9 @@ Set a number of failed Face ID attempts (3, 5, or 10) after which a locked folde
 
 ### Share Sheet Support
 
-FileManager shows up when you tap Share in any other app. Send a file over, then open FileManager to finish bringing it into My Files. (This deliberately doesn't rely on an App Group, since that needs a real, fully provisioned Apple Developer account — the extension hands files to the app over the system clipboard instead, briefly, so it works with any signing setup. Named/custom pasteboards would avoid touching your actual clipboard, but Apple deprecated those for exactly this kind of app-to-extension handoff back in iOS 10.)
+FileManager shows up when you tap Share in any other app. Send a file over, then open FileManager to finish bringing it in. (This deliberately doesn't rely on an App Group, since that needs a real, fully provisioned Apple Developer account — the extension hands files to the app over the system clipboard instead, briefly, so it works with any signing setup. Named/custom pasteboards would avoid touching your actual clipboard, but Apple deprecated those for exactly this kind of app-to-extension handoff back in iOS 10.)
+
+If you've had FileManager open recently, the share sheet also offers a destination folder picker, built the same way — the app quietly drops a list of your folder names onto the clipboard whenever it's open, and the extension reads it back. It's best-effort: without an App Group the extension can't browse your vault directly, so if that list isn't there (or the folder you picked got renamed, hidden, or deleted in the meantime), the file just falls back to landing in My Files.
 
 ### ZIP with Real Encryption
 
@@ -186,7 +188,7 @@ project.yml         XcodeGen project definition
 <details>
 <summary>Click to expand</summary>
 
-- Sharing a file in doesn't let you pick a destination folder anymore — it always lands in My Files, and you have to open FileManager afterwards for it to actually show up. That's the tradeoff for not needing an App Group (and therefore not needing a real, fully provisioned Apple Developer account) to make the Share Extension work.
+- The Share Sheet's folder picker only works if FileManager was opened recently enough for its folder list to still be on the clipboard — otherwise a shared file falls back to My Files, and you have to open FileManager afterwards for it to actually show up. That's the tradeoff for not needing an App Group (and therefore not needing a real, fully provisioned Apple Developer account) to make the Share Extension work.
 - Sending a file from the Share Sheet briefly replaces whatever's on your clipboard, since that's the handoff mechanism. It gets cleared out once FileManager picks the file up.
 - The Share Extension's own UI is English-only for now, regardless of your system language — only the main app is localized.
 - No landscape-optimized layout yet.

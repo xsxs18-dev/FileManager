@@ -5,6 +5,7 @@ enum PendingImportStore {
     struct Item {
         let name: String
         let data: Data
+        let destinationPath: String
     }
 
     static let maxItemSize = 20_000_000
@@ -14,8 +15,11 @@ enum PendingImportStore {
     static func queue(_ items: [Item]) {
         UIPasteboard.general.items = items.compactMap { item in
             guard let nameData = item.name.data(using: .utf8), nameData.count <= UInt32.max else { return nil }
+            guard let destinationData = item.destinationPath.data(using: .utf8), destinationData.count <= UInt32.max else { return nil }
             var payload = encodedUInt32(UInt32(nameData.count))
             payload.append(nameData)
+            payload.append(encodedUInt32(UInt32(destinationData.count)))
+            payload.append(destinationData)
             payload.append(item.data)
             return [itemType: payload]
         }
@@ -41,15 +45,31 @@ enum PendingImportStore {
         ])
     }
 
+    private static func decodeUInt32(_ data: Data) -> UInt32 {
+        data.reduce(UInt32(0)) { ($0 << 8) | UInt32($1) }
+    }
+
     private static func decode(_ payload: Data) -> Item? {
-        guard payload.count > 4 else { return nil }
-        let lengthBytes = payload.prefix(4)
-        let length = lengthBytes.reduce(UInt32(0)) { ($0 << 8) | UInt32($1) }
-        let nameStart = payload.startIndex + 4
-        let nameEnd = nameStart + Int(length)
-        guard nameEnd <= payload.endIndex else { return nil }
-        guard let name = String(data: payload[nameStart..<nameEnd], encoding: .utf8) else { return nil }
-        let fileData = payload[nameEnd...]
-        return Item(name: name, data: Data(fileData))
+        var cursor = payload.startIndex
+        guard let nameLength = readLength(payload, cursor: &cursor) else { return nil }
+        guard let name = readString(payload, cursor: &cursor, length: nameLength) else { return nil }
+        guard let destinationLength = readLength(payload, cursor: &cursor) else { return nil }
+        guard let destinationPath = readString(payload, cursor: &cursor, length: destinationLength) else { return nil }
+        let fileData = payload[cursor...]
+        return Item(name: name, data: Data(fileData), destinationPath: destinationPath)
+    }
+
+    private static func readLength(_ payload: Data, cursor: inout Data.Index) -> Int? {
+        guard cursor + 4 <= payload.endIndex else { return nil }
+        let length = Int(decodeUInt32(payload[cursor..<cursor + 4]))
+        cursor += 4
+        return length
+    }
+
+    private static func readString(_ payload: Data, cursor: inout Data.Index, length: Int) -> String? {
+        guard cursor + length <= payload.endIndex else { return nil }
+        let string = String(data: payload[cursor..<cursor + length], encoding: .utf8)
+        cursor += length
+        return string
     }
 }

@@ -26,10 +26,10 @@ struct RootTabView: View {
             }
         }
         .tint(FVColor.accent)
-        .onAppear(perform: importPending)
-        .onOpenURL { _ in importPending() }
+        .onAppear(perform: handleForeground)
+        .onOpenURL { _ in handleForeground() }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            importPending()
+            handleForeground()
         }
         .alert("Import Complete", isPresented: Binding(
             get: { importMessage != nil },
@@ -41,6 +41,11 @@ struct RootTabView: View {
         }
     }
 
+    private func handleForeground() {
+        FolderIndexStore.publish(relativePaths: FileSystemService.shared.allFolderPaths())
+        importPending()
+    }
+
     private func importPending() {
         let pending = PendingImportStore.takePending()
         guard !pending.isEmpty else { return }
@@ -48,13 +53,24 @@ struct RootTabView: View {
         let root = FileSystemService.shared.rootURL
         var imported = 0
         for item in pending {
-            let name = FileSystemService.shared.uniqueName(for: item.name, in: root)
-            if (try? FileSystemService.shared.createFile(named: name, in: root, contents: item.data)) != nil {
+            let destination = resolvedDirectory(for: item.destinationPath, root: root)
+            let name = FileSystemService.shared.uniqueName(for: item.name, in: destination)
+            if (try? FileSystemService.shared.createFile(named: name, in: destination, contents: item.data)) != nil {
                 imported += 1
             }
         }
         if imported > 0 {
-            importMessage = String(localized: "Brought in \(imported) file(s) shared from another app. They're in My Files.")
+            importMessage = String(localized: "Brought in \(imported) file(s) shared from another app.")
         }
+    }
+
+    private func resolvedDirectory(for relativePath: String, root: URL) -> URL {
+        guard !relativePath.isEmpty else { return root }
+        let candidate = root.appendingPathComponent(relativePath, isDirectory: true)
+        var isDirectory: ObjCBool = false
+        guard FileManager.default.fileExists(atPath: candidate.path, isDirectory: &isDirectory), isDirectory.boolValue else {
+            return root
+        }
+        return candidate
     }
 }

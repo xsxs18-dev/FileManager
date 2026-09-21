@@ -1100,6 +1100,16 @@
           }
         }
       }
+    },
+    "Import Photo": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foto importieren"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

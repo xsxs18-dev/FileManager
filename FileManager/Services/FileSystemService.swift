@@ -79,6 +79,21 @@ final class FileSystemService {
         return results
     }
 
+    func allFolderPaths(in directory: URL? = nil, relativeTo root: URL? = nil) -> [String] {
+        let root = root ?? rootURL
+        let directory = directory ?? root
+        let protectionStore = FolderProtectionStore.shared
+        var results: [String] = []
+        guard let items = try? contents(of: directory) else { return results }
+        for item in items where item.isDirectory {
+            guard !protectionStore.isHidden(item.url), !protectionStore.isLocked(item.url) else { continue }
+            let relativePath = item.url.path.replacingOccurrences(of: root.path + "/", with: "")
+            results.append(relativePath)
+            results.append(contentsOf: allFolderPaths(in: item.url, relativeTo: root))
+        }
+        return results
+    }
+
     @discardableResult
     func createFolder(named name: String, in directory: URL) throws -> URL {
         let sanitized = sanitize(name)
