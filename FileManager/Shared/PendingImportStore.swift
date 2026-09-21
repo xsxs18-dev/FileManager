@@ -26,14 +26,19 @@ enum PendingImportStore {
     }
 
     static func takePending() -> [Item] {
-        let items = UIPasteboard.general.items.compactMap { entry -> Item? in
-            guard let payload = entry[itemType] as? Data else { return nil }
-            return decode(payload)
+        var remaining: [[String: Any]] = []
+        var results: [Item] = []
+        for entry in UIPasteboard.general.items {
+            if let payload = entry[itemType] as? Data, let item = decode(payload) {
+                results.append(item)
+            } else {
+                remaining.append(entry)
+            }
         }
-        if !items.isEmpty {
-            UIPasteboard.general.items = []
+        if !results.isEmpty {
+            UIPasteboard.general.items = remaining
         }
-        return items
+        return results
     }
 
     private static func encodedUInt32(_ value: UInt32) -> Data {

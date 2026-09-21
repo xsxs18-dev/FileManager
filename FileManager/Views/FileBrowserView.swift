@@ -18,6 +18,7 @@ struct FileBrowserView: View {
     @State private var activeCover: ActiveCover?
     @State private var scannedImages: [UIImage] = []
     @State private var photoPickerItems: [PhotosPickerItem] = []
+    @State private var showPhotoPicker = false
     @ObservedObject private var protectionStore = FolderProtectionStore.shared
 
     private enum ActiveSheet: Identifiable {
@@ -142,7 +143,9 @@ struct FileBrowserView: View {
                     } label: {
                         Label("Import File", systemImage: "square.and.arrow.down")
                     }
-                    PhotosPicker(selection: $photoPickerItems, matching: .any(of: [.images, .videos])) {
+                    Button {
+                        showPhotoPicker = true
+                    } label: {
                         Label("Import Photo", systemImage: "photo.badge.plus")
                     }
                     Divider()
@@ -397,6 +400,7 @@ struct FileBrowserView: View {
             Button("Cancel", role: .cancel) {}
         }
         .onAppear(perform: reload)
+        .photosPicker(isPresented: $showPhotoPicker, selection: $photoPickerItems, matching: .any(of: [.images, .videos]))
         .onChange(of: photoPickerItems) { _, newItems in
             importPhotos(newItems)
         }

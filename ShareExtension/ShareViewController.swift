@@ -16,8 +16,7 @@ final class ShareViewController: UIViewController {
         let picker = PendingImportQueueView(
             items: items,
             onComplete: { [weak self] in
-                self?.openMainApp()
-                self?.extensionContext?.completeRequest(returningItems: nil)
+                self?.openMainAppAndFinish()
             },
             onCancel: { [weak self] in
                 let error = NSError(domain: "com.xsxs18.FileManager.ShareExtension", code: -1)
@@ -32,16 +31,13 @@ final class ShareViewController: UIViewController {
         hosting.didMove(toParent: self)
     }
 
-    private func openMainApp() {
-        guard let url = URL(string: "filemanager://import") else { return }
-        let selector = sel_registerName("openURL:")
-        var responder: UIResponder? = self
-        while let current = responder {
-            if current.responds(to: selector) {
-                current.perform(selector, with: url)
-                return
-            }
-            responder = current.next
+    private func openMainAppAndFinish() {
+        guard let url = URL(string: "filemanager://import") else {
+            extensionContext?.completeRequest(returningItems: nil)
+            return
+        }
+        extensionContext?.open(url) { [weak self] _ in
+            self?.extensionContext?.completeRequest(returningItems: nil)
         }
     }
 
