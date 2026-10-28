@@ -13,13 +13,21 @@
       "iconURL": "https://raw.githubusercontent.com/xsxs18-dev/FileManager/main/FileManager/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png",
       "tintColor": "#4CC2FF",
       "category": "utilities",
-      "version": "1.3.2",
+      "version": "1.3.3",
       "versionDate": "2026-10-28",
-      "versionDescription": "- Fix incoming sharing with direct document imports\n- Update AltStore source for build 25",
-      "downloadURL": "https://github.com/xsxs18-dev/FileManager/releases/download/build-26/FileManager-unsigned.ipa",
-      "size": 2876079,
+      "versionDescription": "- Refresh My Files and select Files tab after incoming document import\n- Clean up release descriptions [skip ci]\n- Update AltStore source for build 26",
+      "downloadURL": "https://github.com/xsxs18-dev/FileManager/releases/download/build-27/FileManager-unsigned.ipa",
+      "size": 2879453,
       "minOSVersion": "18.0",
       "versions": [
+        {
+          "version": "1.3.3",
+          "date": "2026-10-28",
+          "localizedDescription": "- Refresh My Files and select Files tab after incoming document import\n- Clean up release descriptions [skip ci]\n- Update AltStore source for build 26",
+          "downloadURL": "https://github.com/xsxs18-dev/FileManager/releases/download/build-27/FileManager-unsigned.ipa",
+          "size": 2879453,
+          "minOSVersion": "18.0"
+        },
         {
           "version": "1.3.2",
           "date": "2026-10-28",
