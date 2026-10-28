@@ -15,7 +15,7 @@
       "category": "utilities",
       "version": "1.3.2",
       "versionDate": "2026-10-28",
-      "versionDescription": "- Fix incoming sharing with direct document imports like Feather\n- Update AltStore source for build 25",
+      "versionDescription": "- Fix incoming sharing with direct document imports\n- Update AltStore source for build 25",
       "downloadURL": "https://github.com/xsxs18-dev/FileManager/releases/download/build-26/FileManager-unsigned.ipa",
       "size": 2876079,
       "minOSVersion": "18.0",
@@ -23,7 +23,7 @@
         {
           "version": "1.3.2",
           "date": "2026-10-28",
-          "localizedDescription": "- Fix incoming sharing with direct document imports like Feather\n- Update AltStore source for build 25",
+          "localizedDescription": "- Fix incoming sharing with direct document imports\n- Update AltStore source for build 25",
           "downloadURL": "https://github.com/xsxs18-dev/FileManager/releases/download/build-26/FileManager-unsigned.ipa",
           "size": 2876079,
           "minOSVersion": "18.0"
