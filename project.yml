@@ -24,6 +24,15 @@ targets:
       path: FileManager/Resources/Info.plist
       properties:
         UILaunchScreen: {}
+        LSSupportsOpeningDocumentsInPlace: true
+        CFBundleDocumentTypes:
+          - CFBundleTypeName: Files
+            CFBundleTypeRole: Editor
+            LSHandlerRank: Alternate
+            LSItemContentTypes:
+              - public.data
+              - public.content
+              - public.folder
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
           - UIInterfaceOrientationLandscapeLeft
@@ -31,7 +40,7 @@ targets:
         NSCameraUsageDescription: "FileManager needs camera access to scan documents."
         NSFaceIDUsageDescription: "FileManager uses Face ID to unlock protected folders."
         CFBundleVersion: "0"
-        CFBundleShortVersionString: "1.3.1"
+        CFBundleShortVersionString: "1.3.2"
         CFBundleLocalizations:
           - en
           - de
@@ -45,38 +54,12 @@ targets:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         TARGETED_DEVICE_FAMILY: "1,2"
     dependencies:
-      - target: ShareExtension
-        embed: true
       - package: ZIPFoundation
 
-  ShareExtension:
-    type: app-extension
-    platform: iOS
-    sources:
-      - path: FileManager/Services/ThemeManager.swift
-      - path: FileManager/DesignSystem/Theme.swift
-      - path: FileManager/DesignSystem/FVTheme.swift
-      - path: FileManager/Shared/PendingImportStore.swift
-      - path: FileManager/Shared/FolderIndexStore.swift
-      - path: ShareExtension
-    info:
-      path: ShareExtension/Info.plist
-      properties:
-        CFBundleDisplayName: FileManager
-        NSExtension:
-          NSExtensionPointIdentifier: com.apple.share-services
-          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShareViewController
-          NSExtensionAttributes:
-            NSExtensionActivationRule: TRUEPREDICATE
-    settings:
-      base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.xsxs18.FileManager.ShareExtension
-        TARGETED_DEVICE_FAMILY: "1,2"
 schemes:
   FileManager:
     build:
       targets:
         FileManager: all
-        ShareExtension: all
     run:
       config: Debug

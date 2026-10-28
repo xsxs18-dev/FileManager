@@ -3,6 +3,8 @@ import UIKit
 
 struct RootTabView: View {
     @State private var importMessage: String?
+    @State private var importError: String?
+    @State private var importingURLs: Set<URL> = []
 
     var body: some View {
         TabView {
@@ -26,10 +28,16 @@ struct RootTabView: View {
             }
         }
         .tint(FVColor.accent)
-        .onAppear(perform: handleForeground)
-        .onOpenURL { _ in handleForeground() }
-        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            handleForeground()
+        .onOpenURL { url in
+            if url.isFileURL { importFile(url) }
+        }
+        .alert("Import Failed", isPresented: Binding(
+            get: { importError != nil },
+            set: { if !$0 { importError = nil } }
+        )) {
+            Button("OK") { importError = nil }
+        } message: {
+            Text(importError ?? "")
         }
         .alert("Import Complete", isPresented: Binding(
             get: { importMessage != nil },
@@ -41,36 +49,32 @@ struct RootTabView: View {
         }
     }
 
-    private func handleForeground() {
-        FolderIndexStore.publish(relativePaths: FileSystemService.shared.allFolderPaths())
-        importPending()
-    }
-
-    private func importPending() {
-        let pending = PendingImportStore.takePending()
-        guard !pending.isEmpty else { return }
-
-        let root = FileSystemService.shared.rootURL
-        var imported = 0
-        for item in pending {
-            let destination = resolvedDirectory(for: item.destinationPath, root: root)
-            let name = FileSystemService.shared.uniqueName(for: item.name, in: destination)
-            if (try? FileSystemService.shared.createFile(named: name, in: destination, contents: item.data)) != nil {
-                imported += 1
+    private func importFile(_ url: URL) {
+        guard importingURLs.insert(url).inserted else { return }
+        Task { @MainActor in
+            defer { importingURLs.remove(url) }
+            do {
+                let accessed = url.startAccessingSecurityScopedResource()
+                defer { if accessed { url.stopAccessingSecurityScopedResource() } }
+                let root = FileSystemService.shared.rootURL
+                let name = FileSystemService.shared.uniqueName(for: url.lastPathComponent, in: root)
+                let destination = root.appendingPathComponent(name)
+                try await Task.detached(priority: .userInitiated) {
+                    let coordinator = NSFileCoordinator()
+                    var coordinationError: NSError?
+                    var copyError: Error?
+                    coordinator.coordinate(readingItemAt: url, options: [], error: &coordinationError) { readableURL in
+                        do { try FileManager.default.copyItem(at: readableURL, to: destination) }
+                        catch { copyError = error }
+                    }
+                    if let coordinationError { throw coordinationError }
+                    if let copyError { throw copyError }
+                }.value
+                importMessage = String(localized: "File imported into My Files.")
+            } catch {
+                importError = error.localizedDescription
             }
         }
-        if imported > 0 {
-            importMessage = String(localized: "Brought in \(imported) file(s) shared from another app.")
-        }
     }
 
-    private func resolvedDirectory(for relativePath: String, root: URL) -> URL {
-        guard !relativePath.isEmpty else { return root }
-        let candidate = root.appendingPathComponent(relativePath, isDirectory: true)
-        var isDirectory: ObjCBool = false
-        guard FileManager.default.fileExists(atPath: candidate.path, isDirectory: &isDirectory), isDirectory.boolValue else {
-            return root
-        }
-        return candidate
-    }
 }
