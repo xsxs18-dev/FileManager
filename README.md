@@ -31,11 +31,11 @@ Everything runs on-device. There's no server, no analytics, no account. The only
   </a>
 </p>
 
-<p align="center">On-device, tap the card above. In SideStore, Feather, or anywhere else that asks for a source URL, copy exactly this link — <strong>not</strong> the address of this GitHub page:</p>
+<p align="center">On-device, tap the card above. In SideStore, or anywhere else that asks for a source URL, copy exactly this link — <strong>not</strong> the address of this GitHub page:</p>
 
 <p align="center"><code>https://raw.githubusercontent.com/xsxs18-dev/FileManager/main/altstore-source.json</code></p>
 
-<p align="center">Add that once and every future release shows up as an update automatically — see <a href="#add-it-to-altstore-sidestore-or-feather">below</a> for details.</p>
+<p align="center">Add that once and every future release shows up as an update automatically — see <a href="#add-it-to-altstore-sidestore">below</a> for details.</p>
 
 ## Contents
 
@@ -54,7 +54,7 @@ Everything runs on-device. There's no server, no analytics, no account. The only
   - [Localization](#localization)
 - [Screenshots](#screenshots)
 - [Getting it running](#getting-it-running)
-  - [Add it to AltStore, SideStore, or Feather](#add-it-to-altstore-sidestore-or-feather)
+  - [Add it to AltStore or SideStore](#add-it-to-altstore-sidestore)
   - [Download and sign manually](#download-and-sign-manually)
   - [Build from source](#build-from-source)
 - [How it's built](#how-its-built)
@@ -119,11 +119,11 @@ The UI follows your device's system language. Currently English and German; PRs 
 
 ## Getting it running
 
-### Add it to AltStore, SideStore, or Feather
+### Add it to AltStore or SideStore
 
 This is the easiest way, and the only one where updates find you automatically instead of the other way around. FileManager publishes itself as an [AltStore](https://altstore.io/) source — add it once, and every new release shows up as an update in the app, no GitHub visits required.
 
-[**Tap to add the source directly**](altstore://source?url=https://raw.githubusercontent.com/xsxs18-dev/FileManager/main/altstore-source.json) if you're reading this on the device you want to install to. Otherwise, add it manually — in AltStore that's **Browse → Sources → Add Source**; in SideStore or Feather, look for **Add Source** / **Repos** — and paste exactly this URL:
+[**Tap to add the source directly**](altstore://source?url=https://raw.githubusercontent.com/xsxs18-dev/FileManager/main/altstore-source.json) if you're reading this on the device you want to install to. Otherwise, add it manually — in AltStore that's **Browse → Sources → Add Source**; in SideStore, look for **Add Source** / **Repos** — and paste exactly this URL:
 
 ```
 https://raw.githubusercontent.com/xsxs18-dev/FileManager/main/altstore-source.json
@@ -131,7 +131,7 @@ https://raw.githubusercontent.com/xsxs18-dev/FileManager/main/altstore-source.js
 
 That's `raw.githubusercontent.com`, not `github.com` — the plain repo link above is a webpage for humans to read, not a source file a sideloading app can parse, and pasting it in will just silently do nothing.
 
-> Note: this only works with **AltStore Classic** and its compatible clients (SideStore, Feather), not **AltStore PAL** — PAL requires every app to pass Apple's notarization process under a paid Apple Developer account, which is exactly what this project avoids needing.
+> Note: this only works with **AltStore Classic** and its compatible clients (SideStore), not **AltStore PAL** — PAL requires every app to pass Apple's notarization process under a paid Apple Developer account, which is exactly what this project avoids needing.
 
 ### Download and sign manually
 

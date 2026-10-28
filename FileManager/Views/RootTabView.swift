@@ -2,16 +2,20 @@ import SwiftUI
 import UIKit
 
 struct RootTabView: View {
+    @State private var selectedTab = 0
+    @State private var filesRevision = UUID()
     @State private var importMessage: String?
     @State private var importError: String?
     @State private var importingURLs: Set<URL> = []
 
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
             ContentView()
+                .id(filesRevision)
                 .tabItem {
                     Label("Files", systemImage: "folder.fill")
                 }
+                .tag(0)
 
             NavigationStack {
                 PDFCreatorView()
@@ -19,6 +23,7 @@ struct RootTabView: View {
             .tabItem {
                 Label("PDF Creator", systemImage: "doc.richtext.fill")
             }
+            .tag(1)
 
             NavigationStack {
                 SettingsView()
@@ -26,6 +31,7 @@ struct RootTabView: View {
             .tabItem {
                 Label("Settings", systemImage: "gearshape.fill")
             }
+            .tag(2)
         }
         .tint(FVColor.accent)
         .onOpenURL { url in
@@ -70,6 +76,8 @@ struct RootTabView: View {
                     if let coordinationError { throw coordinationError }
                     if let copyError { throw copyError }
                 }.value
+                filesRevision = UUID()
+                selectedTab = 0
                 importMessage = String(localized: "File imported into My Files.")
             } catch {
                 importError = error.localizedDescription
